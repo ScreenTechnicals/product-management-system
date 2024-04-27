@@ -3,7 +3,7 @@
 import { itemTypes } from "@/common/consts";
 import { partyNames } from "@/common/consts/party-names.const";
 import { ItemType } from "@/common/types";
-import { convertDateToTimestamp, updateItemStock } from "@/helpers";
+import { convertDateToTimestamp, issueItemStock } from "@/helpers";
 import { fromDate, getLocalTimeZone } from "@internationalized/date";
 import {
   Button,
@@ -37,7 +37,7 @@ export const IssueItemStockModal = ({
   selectedItem,
 }: EditItemStockModalProps) => {
   const [itemStockData, setItemStockData] = useState<ItemType>({
-    id: selectedItem.id.toUpperCase(),
+    id: `OUT-${Date.now().toString()}`.toUpperCase(),
     itemName: selectedItem.itemName,
     itemType: selectedItem.itemType,
     partyName: selectedItem.partyName,
@@ -46,6 +46,7 @@ export const IssueItemStockModal = ({
     rate: selectedItem.rate,
     purchaseDate: selectedItem.purchaseDate,
     issueDate: selectedItem.issueDate,
+    stockRef: selectedItem.id.toUpperCase(),
     totalPrice: selectedItem.totalPrice,
     remarks: selectedItem.remarks,
   });
@@ -58,7 +59,7 @@ export const IssueItemStockModal = ({
 
   useEffect(() => {
     setItemStockData({
-      id: selectedItem.id.toUpperCase(),
+      id: `OUT-${Date.now().toString()}`.toUpperCase(),
       itemName: selectedItem.itemName,
       itemType: selectedItem.itemType,
       partyName: selectedItem.partyName,
@@ -67,6 +68,7 @@ export const IssueItemStockModal = ({
       rate: selectedItem.rate,
       purchaseDate: selectedItem.purchaseDate,
       issueDate: selectedItem.issueDate,
+      stockRef: selectedItem.id.toUpperCase(),
       totalPrice: selectedItem.totalPrice,
       remarks: selectedItem.remarks,
     });
@@ -213,7 +215,7 @@ export const IssueItemStockModal = ({
                           ),
                           getLocalTimeZone()
                         )
-                      : fromDate(new Date(), getLocalTimeZone())
+                      : null
                   }
                   onChange={(e) => {
                     setItemStockData((value) => {
@@ -259,7 +261,11 @@ export const IssueItemStockModal = ({
                 <Button
                   color="secondary"
                   onPress={() => {
-                    updateItemStock(itemStockData);
+                    setIsSubmiting(true);
+                    issueItemStock(itemStockData).finally(() => {
+                      setIsSubmiting(false);
+                      onClose();
+                    });
                   }}
                   className="w-full"
                   isDisabled={isDissabled}

@@ -33,6 +33,7 @@ const ItemsStockPage = () => {
     rate: 0,
     purchaseDate: undefined,
     issueDate: undefined,
+    stockRef: "",
     totalPrice: 0,
     remarks: "",
   });

@@ -9,6 +9,7 @@ export const updateItemStock = async (item: ItemType) => {
     const itemStockRef = doc(db, "items-stock", item.id.toUpperCase());
 
     const itemStockSnap = await getDoc(itemStockRef);
+
     if (!itemStockSnap?.data()?.issueDate && item.issueDate) {
       toast.error("This item is not issued yet! Please issue the item first!");
       return false;

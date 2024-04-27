@@ -33,8 +33,9 @@ export const AddItemModal = ({
   onClose,
   onOpenChange,
 }: AddItemModalProps) => {
+  const id = `IN-${Date.now().toString()}`.toUpperCase();
   const [itemInData, setItemInData] = useState<ItemType>({
-    id: `IN-${Date.now().toString()}`.toUpperCase(),
+    id: id.toUpperCase(),
     itemName: "",
     itemType: "",
     partyName: "",

@@ -57,7 +57,7 @@ export const updateItemIn = async (item: ItemType) => {
     return true;
   } catch (error) {
     console.error("Error updating item: ", error);
-    toast.success("Something Went Wrong!");
+    toast.error("Something Went Wrong!");
     return false;
   }
 };

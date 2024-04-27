@@ -25,7 +25,7 @@ type QueryFiltersType = {
   limit: number;
 };
 
-type ItemsStockTableProps = {
+type ItemsOutTableProps = {
   onOpenEditModal: () => void;
   onOpenIssueModal: () => void;
   setSelectedItem: (item: ItemType) => void;
@@ -39,6 +39,10 @@ const tableHeaders = [
   {
     key: "id",
     value: "Item Id",
+  },
+  {
+    key: "stockRef",
+    value: "Stock Ref.",
   },
   {
     key: "itemName",
@@ -86,11 +90,11 @@ const tableHeaders = [
   },
 ];
 
-export const ItemsStockTable = ({
+export const ItemsOutTable = ({
   onOpenEditModal,
   onOpenIssueModal,
   setSelectedItem,
-}: ItemsStockTableProps) => {
+}: ItemsOutTableProps) => {
   const [queryFilters, setQueryFilters] = useState<QueryFiltersType>({
     orderBy: "id",
     orderDirection: "desc",
@@ -99,15 +103,15 @@ export const ItemsStockTable = ({
 
   let slno = 1;
 
-  const itemsStockRef = collection(db, "items-stock");
-  const itemsStockRefQuery = query(
-    itemsStockRef,
+  const itemsOutRef = collection(db, "items-out");
+  const itemsOutRefQuery = query(
+    itemsOutRef,
     orderBy(queryFilters.orderBy, queryFilters.orderDirection),
     limit(queryFilters.limit)
   );
 
-  const [itemsStockDataSanpshots, isItemsStockDataSnapshotsLoading] =
-    useCollectionData(itemsStockRefQuery);
+  const [itemsOutDataSanpshots, isItemsOutDataSnapshotsLoading] =
+    useCollectionData(itemsOutRefQuery);
 
   return (
     <Table
@@ -115,11 +119,11 @@ export const ItemsStockTable = ({
       isStriped
       aria-label="item table component"
       bottomContent={
-        (itemsStockDataSanpshots ?? [])?.length > 0 &&
-        !isItemsStockDataSnapshotsLoading ? (
+        (itemsOutDataSanpshots ?? [])?.length > 0 &&
+        !isItemsOutDataSnapshotsLoading ? (
           <div className="flex w-full justify-center">
             <Button
-              isDisabled={isItemsStockDataSnapshotsLoading}
+              isDisabled={isItemsOutDataSnapshotsLoading}
               variant="flat"
               onPress={() => {
                 setQueryFilters((data) => {
@@ -130,14 +134,14 @@ export const ItemsStockTable = ({
                 });
               }}
             >
-              {isItemsStockDataSnapshotsLoading && (
+              {isItemsOutDataSnapshotsLoading && (
                 <Spinner color="white" size="sm" />
               )}
               Load More
             </Button>
           </div>
         ) : (
-          !isItemsStockDataSnapshotsLoading && (
+          !isItemsOutDataSnapshotsLoading && (
             <div className="w-full flex text-center place-items-center place-content-center h-[200px] text-2xl text-[#eeeeee]">
               No Data Found
             </div>
@@ -161,8 +165,8 @@ export const ItemsStockTable = ({
         })}
       </TableHeader>
       <TableBody
-        isLoading={isItemsStockDataSnapshotsLoading}
-        items={JSON.parse(JSON.stringify(itemsStockDataSanpshots ?? []))}
+        isLoading={isItemsOutDataSnapshotsLoading}
+        items={JSON.parse(JSON.stringify(itemsOutDataSanpshots ?? []))}
         loadingContent={<Spinner />}
       >
         {(item: ItemType) => (
@@ -193,6 +197,17 @@ export const ItemsStockTable = ({
                   <TableCell
                     onClick={() => {
                       copyToClipboard(item.id);
+                    }}
+                    className="cursor-pointer"
+                  >
+                    {getKeyValue(item, columnKey)}
+                  </TableCell>
+                );
+              } else if (columnKey === "stockRef") {
+                return (
+                  <TableCell
+                    onClick={() => {
+                      if (item?.stockRef) copyToClipboard(item.stockRef);
                     }}
                     className="cursor-pointer"
                   >
