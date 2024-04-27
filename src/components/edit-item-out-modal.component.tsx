@@ -3,7 +3,7 @@
 import { itemTypes } from "@/common/consts";
 import { partyNames } from "@/common/consts/party-names.const";
 import { ItemType } from "@/common/types";
-import { sendOutItemToInItem, updateItemOut } from "@/helpers";
+import { sendOutItemToStockItem, updateItemOut } from "@/helpers";
 import { fromDate, getLocalTimeZone } from "@internationalized/date";
 import {
   Button,
@@ -244,7 +244,7 @@ export const EditItemOutModal = ({
                   color="secondary"
                   onPress={() => {
                     setIsSendingBack(true);
-                    sendOutItemToInItem(itemStockData).finally(() => {
+                    sendOutItemToStockItem(itemStockData).finally(() => {
                       setIsSendingBack(false);
                       onClose();
                     });

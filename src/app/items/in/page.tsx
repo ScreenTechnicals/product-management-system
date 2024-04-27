@@ -2,11 +2,18 @@
 
 import { ItemType } from "@/common/types";
 import { EditItemInModal, ItemsInTable } from "@/components";
+import { DeleteItemModal } from "@/components/delete-item-modal.component";
 import { useDisclosure } from "@nextui-org/react";
 import { useState } from "react";
 
 const ItemsInPage = () => {
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
+  const {
+    isOpen: isOpenDelete,
+    onOpen: onOpenDelete,
+    onClose: onCloseDelete,
+    onOpenChange: onOpenChangeDelete,
+  } = useDisclosure();
   const [selectedItem, setSelectedItem] = useState<ItemType>({
     id: "",
     itemName: "",
@@ -25,9 +32,18 @@ const ItemsInPage = () => {
       <ItemsInTable onOpenModal={onOpen} setSelectedItem={setSelectedItem} />
       <EditItemInModal
         isOpen={isOpen}
+        onOpenDelete={onOpenDelete}
         onClose={onClose}
         onOpenChange={onOpenChange}
         selectedItem={selectedItem}
+      />
+      <DeleteItemModal
+        isOpen={isOpenDelete}
+        onClose={onCloseDelete}
+        onOpenChange={onOpenChangeDelete}
+        onCloseEdit={onClose}
+        collection="items-in"
+        id={selectedItem.id}
       />
     </div>
   );

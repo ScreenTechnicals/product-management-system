@@ -28,12 +28,14 @@ type EditItemStockModalProps = Pick<
   "isOpen" | "onClose" | "onOpenChange"
 > & {
   selectedItem: ItemType;
+  onOpenDelete: () => void;
 };
 
 export const EditItemStockModal = ({
   isOpen,
   onClose,
   onOpenChange,
+  onOpenDelete,
   selectedItem,
 }: EditItemStockModalProps) => {
   const [itemStockData, setItemStockData] = useState<ItemType>({
@@ -272,11 +274,12 @@ export const EditItemStockModal = ({
                 <Button
                   color="danger"
                   onPress={() => {
-                    // updateItemIn(itemInData);
+                    onOpenDelete();
                   }}
                   className="w-full"
-                  // isLoading={isSubmiting}
-                  isDisabled={isSubmiting}
+                  isDisabled={
+                    isSubmiting || selectedItem?.issueDate !== undefined
+                  }
                 >
                   Delete
                 </Button>

@@ -28,11 +28,13 @@ type EditItemInModalProps = Pick<
   "isOpen" | "onClose" | "onOpenChange"
 > & {
   selectedItem: ItemType;
+  onOpenDelete: () => void;
 };
 
 export const EditItemInModal = ({
   isOpen,
   onClose,
+  onOpenDelete,
   onOpenChange,
   selectedItem,
 }: EditItemInModalProps) => {
@@ -243,7 +245,7 @@ export const EditItemInModal = ({
                 <Button
                   color="danger"
                   onPress={() => {
-                    // updateItemIn(itemInData);
+                    onOpenDelete();
                   }}
                   className="w-full"
                   isDisabled={isSubmiting}

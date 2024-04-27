@@ -3,7 +3,7 @@ import { db } from "@/configs";
 import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import toast from "react-hot-toast";
 
-export const sendOutItemToInItem = async (item: ItemType) => {
+export const sendOutItemToStockItem = async (item: ItemType) => {
   try {
     const itemOutRef = doc(db, "items-out", item.id);
     const itemOutSnap = await getDoc(itemOutRef);

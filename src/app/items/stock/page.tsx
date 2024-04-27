@@ -6,6 +6,7 @@ import {
   IssueItemStockModal,
   ItemsStockTable,
 } from "@/components";
+import { DeleteItemModal } from "@/components/delete-item-modal.component";
 import { useDisclosure } from "@nextui-org/react";
 import { useState } from "react";
 
@@ -21,6 +22,13 @@ const ItemsStockPage = () => {
     onOpen: onOpenIssue,
     onClose: onCloseIssue,
     onOpenChange: onOpenChangeIssue,
+  } = useDisclosure();
+
+  const {
+    isOpen: isOpenDelete,
+    onOpen: onOpenDelete,
+    onClose: onCloseDelete,
+    onOpenChange: onOpenChangeDelete,
   } = useDisclosure();
 
   const [selectedItem, setSelectedItem] = useState<ItemType>({
@@ -47,6 +55,7 @@ const ItemsStockPage = () => {
       />
       <EditItemStockModal
         isOpen={isOpenEdit}
+        onOpenDelete={onOpenDelete}
         onClose={onCloseEdit}
         onOpenChange={onOpenChangeEdit}
         selectedItem={selectedItem}
@@ -56,6 +65,14 @@ const ItemsStockPage = () => {
         onClose={onCloseIssue}
         onOpenChange={onOpenChangeIssue}
         selectedItem={selectedItem}
+      />
+      <DeleteItemModal
+        isOpen={isOpenDelete}
+        onClose={onCloseDelete}
+        onOpenChange={onOpenChangeDelete}
+        onCloseEdit={onCloseEdit}
+        collection="items-stock"
+        id={selectedItem.id}
       />
     </div>
   );
