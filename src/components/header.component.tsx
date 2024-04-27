@@ -17,8 +17,10 @@ import {
 import { routes } from "@/common/consts";
 import { usePathname } from "next/navigation";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { IoMenuOutline } from "react-icons/io5";
+import { CgProfile } from "react-icons/cg";
+import { IoLogOutOutline, IoMenuOutline } from "react-icons/io5";
 import { AddItemModal } from "./add-item-modal.componet";
+import { ProfileModal } from "./profile-modal.component";
 
 const navLinks = [
   { title: routes.dashboard.title, href: routes.dashboard.pathname },
@@ -36,9 +38,16 @@ export const Header = () => {
     (link) => link.href === pathname
   )?.title;
 
+  const {
+    isOpen: isOpenProfile,
+    onOpen: onOpenProfile,
+    onClose: onCloseProfile,
+    onOpenChange: onOpenChangeProfile,
+  } = useDisclosure();
+
   return (
     <header className="w-full sticky flex justify-between items-center z-[10] bg-[#eeeeee] py-5 md:px-10 px-5 top-0 left-0">
-      <ButtonGroup variant="flat" className="flex items-center gap-5">
+      <ButtonGroup variant="flat" className="flex items-center gap-1 md:gap-5">
         <Dropdown placement="bottom-end">
           <DropdownTrigger className="rounded-full cursor-pointer outline-none">
             <button className="cursor-pointer">
@@ -59,28 +68,42 @@ export const Header = () => {
             })}
           </DropdownMenu>
         </Dropdown>
-        <span className="text-2xl font-bold text-primary-500">
+        <span className="text-xl md:text-2xl font-bold text-primary-500">
           {currentPathTitle}
         </span>
       </ButtonGroup>
-      <div className="flex gap-5">
+      <div className="flex gap-2 md:gap-5">
         <Button type="button" color="primary" onClick={onOpen}>
           Add Item
         </Button>
         <ButtonGroup variant="flat">
           <Dropdown placement="bottom-end">
             <DropdownTrigger className="rounded-full cursor-pointer">
-              <Avatar color="primary" isBordered src={user?.photoURL || ""} />
+              <Avatar
+                color="primary"
+                isBordered
+                src={user?.photoURL!}
+                alt={user?.displayName?.slice(0, 1)}
+              />
             </DropdownTrigger>
             <DropdownMenu
               disallowEmptySelection
               selectionMode="single"
               className="max-w-[300px]"
             >
-              <DropdownItem key="profile">
-                <Link href={"/"}>Your Profile</Link>
+              <DropdownItem
+                onClick={onOpenProfile}
+                key="profile"
+                startContent={<CgProfile size={20} />}
+              >
+                Your Profile
               </DropdownItem>
-              <DropdownItem onClick={logout} key="logout">
+
+              <DropdownItem
+                onClick={logout}
+                key="logout"
+                startContent={<IoLogOutOutline size={20} />}
+              >
                 Logout
               </DropdownItem>
             </DropdownMenu>
@@ -91,6 +114,12 @@ export const Header = () => {
         isOpen={isOpen}
         onClose={onClose}
         onOpenChange={onOpenChange}
+      />
+      <ProfileModal
+        isOpen={isOpenProfile}
+        onClose={onCloseProfile}
+        onOpenChange={onOpenChangeProfile}
+        user={user!}
       />
     </header>
   );

@@ -277,9 +277,7 @@ export const EditItemStockModal = ({
                     onOpenDelete();
                   }}
                   className="w-full"
-                  isDisabled={
-                    isSubmiting || selectedItem?.issueDate !== undefined
-                  }
+                  isDisabled={isSubmiting}
                 >
                   Delete
                 </Button>
