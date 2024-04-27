@@ -32,7 +32,7 @@ export const GeneralLayout = ({ children }: GeneralLayoutProps) => {
   return (
     <NextUI>
       <Toaster position="top-center" />
-      <div className="md:grid h-screen md:grid-rows-[auto_1fr] selection:bg-danger-500/30">
+      <div className="2xl:grid h-[100svh] 2xl:grid-rows-[auto_1fr] selection:bg-primary-500/30s">
         <Header />
         {children}
       </div>

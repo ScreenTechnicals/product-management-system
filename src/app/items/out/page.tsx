@@ -1,7 +1,7 @@
 "use client";
 
 import { ItemType } from "@/common/types";
-import { EditItemStockModal, IssueItemStockModal } from "@/components";
+import { EditItemOutModal } from "@/components";
 import { ItemsOutTable } from "@/components/items-out-table.component";
 import { useDisclosure } from "@nextui-org/react";
 import { useState } from "react";
@@ -12,12 +12,6 @@ const ItemsOutPage = () => {
     onOpen: onOpenEdit,
     onClose: onCloseEdit,
     onOpenChange: onOpenChangeEdit,
-  } = useDisclosure();
-  const {
-    isOpen: isOpenIssue,
-    onOpen: onOpenIssue,
-    onClose: onCloseIssue,
-    onOpenChange: onOpenChangeIssue,
   } = useDisclosure();
 
   const [selectedItem, setSelectedItem] = useState<ItemType>({
@@ -39,19 +33,13 @@ const ItemsOutPage = () => {
     <div className="w-full md:px-10 p-5">
       <ItemsOutTable
         onOpenEditModal={onOpenEdit}
-        onOpenIssueModal={onOpenIssue}
+        onOpenIssueModal={onOpenEdit}
         setSelectedItem={setSelectedItem}
       />
-      <EditItemStockModal
+      <EditItemOutModal
         isOpen={isOpenEdit}
         onClose={onCloseEdit}
         onOpenChange={onOpenChangeEdit}
-        selectedItem={selectedItem}
-      />
-      <IssueItemStockModal
-        isOpen={isOpenIssue}
-        onClose={onCloseIssue}
-        onOpenChange={onOpenChangeIssue}
         selectedItem={selectedItem}
       />
     </div>

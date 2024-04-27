@@ -37,7 +37,7 @@ export const IssueItemStockModal = ({
   selectedItem,
 }: EditItemStockModalProps) => {
   const [itemStockData, setItemStockData] = useState<ItemType>({
-    id: `OUT-${Date.now().toString()}`.toUpperCase(),
+    id: Date.now().toString(),
     itemName: selectedItem.itemName,
     itemType: selectedItem.itemType,
     partyName: selectedItem.partyName,
@@ -46,7 +46,7 @@ export const IssueItemStockModal = ({
     rate: selectedItem.rate,
     purchaseDate: selectedItem.purchaseDate,
     issueDate: selectedItem.issueDate,
-    stockRef: selectedItem.id.toUpperCase(),
+    stockRef: selectedItem.id,
     totalPrice: selectedItem.totalPrice,
     remarks: selectedItem.remarks,
   });
@@ -59,7 +59,7 @@ export const IssueItemStockModal = ({
 
   useEffect(() => {
     setItemStockData({
-      id: `OUT-${Date.now().toString()}`.toUpperCase(),
+      id: Date.now().toString(),
       itemName: selectedItem.itemName,
       itemType: selectedItem.itemType,
       partyName: selectedItem.partyName,
@@ -68,7 +68,7 @@ export const IssueItemStockModal = ({
       rate: selectedItem.rate,
       purchaseDate: selectedItem.purchaseDate,
       issueDate: selectedItem.issueDate,
-      stockRef: selectedItem.id.toUpperCase(),
+      stockRef: selectedItem.id,
       totalPrice: selectedItem.totalPrice,
       remarks: selectedItem.remarks,
     });

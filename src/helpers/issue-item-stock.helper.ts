@@ -9,11 +9,7 @@ export const issueItemStock = async (item: ItemType) => {
       toast.error("Please Select Issue Date!");
       return false;
     }
-    const itemStockRef = doc(
-      db,
-      "items-stock",
-      item?.stockRef?.toUpperCase() ?? ""
-    );
+    const itemStockRef = doc(db, "items-stock", item?.stockRef ?? "");
     const itemStockSnap = await getDoc(itemStockRef);
 
     if (!itemStockSnap.exists()) {
@@ -31,7 +27,7 @@ export const issueItemStock = async (item: ItemType) => {
     }
 
     await setDoc(
-      doc(db, "items-out", item.id.toUpperCase()),
+      doc(db, "items-out", item.id),
       {
         ...item,
       },

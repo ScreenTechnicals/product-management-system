@@ -5,9 +5,8 @@ import toast from "react-hot-toast";
 
 export const updateItemIn = async (item: ItemType) => {
   try {
-    const itemsInRef = doc(db, "items-in", item.id.toUpperCase());
-    const itemsStockRef = doc(db, "items-stock", item.id.toUpperCase());
-    // const itemsOutRef = doc(db, "items-out", item.id); // item out id = OUT-<same id as in/stock>-<timestamp>
+    const itemsInRef = doc(db, "items-in", item.id);
+    const itemsStockRef = doc(db, "items-stock", item.id);
 
     const itemStockSnap = await getDoc(itemsStockRef);
 

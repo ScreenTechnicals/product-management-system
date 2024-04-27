@@ -37,7 +37,7 @@ export const EditItemStockModal = ({
   selectedItem,
 }: EditItemStockModalProps) => {
   const [itemStockData, setItemStockData] = useState<ItemType>({
-    id: selectedItem.id.toUpperCase(),
+    id: selectedItem.id,
     itemName: selectedItem.itemName,
     itemType: selectedItem.itemType,
     partyName: selectedItem.partyName,
@@ -54,7 +54,7 @@ export const EditItemStockModal = ({
 
   useEffect(() => {
     setItemStockData({
-      id: selectedItem.id.toUpperCase(),
+      id: selectedItem.id,
       itemName: selectedItem.itemName,
       itemType: selectedItem.itemType,
       partyName: selectedItem.partyName,

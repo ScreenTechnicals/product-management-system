@@ -240,17 +240,6 @@ export const ItemsOutTable = ({
                     >
                       Edit
                     </Button>
-                    <Button
-                      variant="flat"
-                      color="secondary"
-                      size="sm"
-                      onClick={() => {
-                        setSelectedItem(item);
-                        onOpenIssueModal();
-                      }}
-                    >
-                      Issue
-                    </Button>
                   </TableCell>
                 );
               }

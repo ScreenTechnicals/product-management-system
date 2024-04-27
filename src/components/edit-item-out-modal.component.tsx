@@ -3,7 +3,7 @@
 import { itemTypes } from "@/common/consts";
 import { partyNames } from "@/common/consts/party-names.const";
 import { ItemType } from "@/common/types";
-import { convertDateToTimestamp, updateItemIn } from "@/helpers";
+import { sendOutItemToInItem, updateItemOut } from "@/helpers";
 import { fromDate, getLocalTimeZone } from "@internationalized/date";
 import {
   Button,
@@ -23,20 +23,20 @@ import {
 import { useEffect, useState } from "react";
 import { BiChevronDown } from "react-icons/bi";
 
-type EditItemInModalProps = Pick<
+type EditItemOutModalProps = Pick<
   ModalProps,
   "isOpen" | "onClose" | "onOpenChange"
 > & {
   selectedItem: ItemType;
 };
 
-export const EditItemInModal = ({
+export const EditItemOutModal = ({
   isOpen,
   onClose,
   onOpenChange,
   selectedItem,
-}: EditItemInModalProps) => {
-  const [itemInData, setItemInData] = useState<ItemType>({
+}: EditItemOutModalProps) => {
+  const [itemStockData, setItemStockData] = useState<ItemType>({
     id: selectedItem.id,
     itemName: selectedItem.itemName,
     itemType: selectedItem.itemType,
@@ -44,15 +44,24 @@ export const EditItemInModal = ({
     requisitionBy: selectedItem.requisitionBy,
     quantity: selectedItem.quantity,
     rate: selectedItem.rate,
-    purchaseDate: selectedItem.issueDate,
+    purchaseDate: selectedItem.purchaseDate,
+    issueDate: selectedItem.issueDate,
+    stockRef: selectedItem?.stockRef,
     totalPrice: selectedItem.totalPrice,
     remarks: selectedItem.remarks,
   });
 
   const [isSubmiting, setIsSubmiting] = useState(false);
+  const [isSendingBack, setIsSendingBack] = useState(false);
+
+  const isDissabled =
+    itemStockData.quantity > selectedItem.quantity ||
+    itemStockData.rate > selectedItem.rate ||
+    isSubmiting ||
+    isSendingBack;
 
   useEffect(() => {
-    setItemInData({
+    setItemStockData({
       id: selectedItem.id,
       itemName: selectedItem.itemName,
       itemType: selectedItem.itemType,
@@ -60,7 +69,9 @@ export const EditItemInModal = ({
       requisitionBy: selectedItem.requisitionBy,
       quantity: selectedItem.quantity,
       rate: selectedItem.rate,
-      purchaseDate: selectedItem.purchaseDate ?? undefined,
+      purchaseDate: selectedItem.purchaseDate,
+      issueDate: selectedItem.issueDate,
+      stockRef: selectedItem?.stockRef,
       totalPrice: selectedItem.totalPrice,
       remarks: selectedItem.remarks,
     });
@@ -73,7 +84,7 @@ export const EditItemInModal = ({
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Add Item
+                Edit Remarks
               </ModalHeader>
               <ModalBody>
                 <div className="flex items-center gap-3">
@@ -81,22 +92,17 @@ export const EditItemInModal = ({
                     type="text"
                     label="Item Name"
                     className="w-full"
-                    onChange={(e) => {
-                      setItemInData({
-                        ...itemInData,
-                        itemName: e.target.value,
-                      });
-                    }}
-                    value={itemInData.itemName}
+                    isReadOnly
+                    value={itemStockData.itemName}
                     isRequired
                   />
                   <Dropdown>
                     <DropdownTrigger>
                       <Button className="py-7 w-1/2">
                         <span>
-                          {itemInData.itemType.length === 0
+                          {itemStockData.itemType.length === 0
                             ? "Item Type"
-                            : itemInData.itemType}
+                            : itemStockData.itemType}
                         </span>
                         <BiChevronDown />
                       </Button>
@@ -108,15 +114,7 @@ export const EditItemInModal = ({
                     >
                       {(item) => {
                         return (
-                          <DropdownItem
-                            onClick={() => {
-                              setItemInData({
-                                ...itemInData,
-                                itemType: item.value,
-                              });
-                            }}
-                            key={item.label}
-                          >
+                          <DropdownItem isReadOnly key={item.label}>
                             {item.value}
                           </DropdownItem>
                         );
@@ -124,15 +122,14 @@ export const EditItemInModal = ({
                     </DropdownMenu>
                   </Dropdown>
                 </div>
-
                 <div className="flex gap-3">
                   <Dropdown>
                     <DropdownTrigger>
                       <Button className="py-7 w-1/2">
                         <span>
-                          {itemInData.partyName.length === 0
+                          {itemStockData.partyName.length === 0
                             ? "Party Name"
-                            : itemInData.partyName}
+                            : itemStockData.partyName}
                         </span>
                         <BiChevronDown />
                       </Button>
@@ -144,15 +141,7 @@ export const EditItemInModal = ({
                     >
                       {(item) => {
                         return (
-                          <DropdownItem
-                            onClick={() => {
-                              setItemInData({
-                                ...itemInData,
-                                partyName: item.value,
-                              });
-                            }}
-                            key={item.label}
-                          >
+                          <DropdownItem isReadOnly key={item.label}>
                             {item.value}
                           </DropdownItem>
                         );
@@ -162,42 +151,33 @@ export const EditItemInModal = ({
                   <Input
                     type="text"
                     label="Requisition By"
-                    onChange={(e) => {
-                      setItemInData({
-                        ...itemInData,
-                        requisitionBy: e.target.value,
-                      });
-                    }}
-                    value={itemInData.requisitionBy}
+                    isReadOnly
+                    value={itemStockData.requisitionBy}
                     isRequired
                   />
                 </div>
                 <div className="flex gap-3">
                   <Input
                     type="number"
-                    label="Quantity"
-                    onChange={(e) => {
-                      setItemInData({
-                        ...itemInData,
-                        quantity: Number(e.target.value),
-                        totalPrice: Number(e.target.value) * itemInData.rate,
-                      });
-                    }}
-                    value={itemInData.quantity.toString()}
+                    label={`Quantity(Max: ${selectedItem.quantity})`}
+                    max={itemStockData.quantity}
+                    color={
+                      itemStockData.quantity > selectedItem.quantity
+                        ? "danger"
+                        : "default"
+                    }
+                    isInvalid={itemStockData.quantity > selectedItem.quantity}
+                    errorMessage={`Max Quantity: ${selectedItem.quantity}`}
+                    isReadOnly
+                    value={itemStockData.quantity.toString()}
                     isRequired
                   />
                   <Input
                     type="number"
                     label="Rate"
-                    onChange={(e) => {
-                      setItemInData({
-                        ...itemInData,
-                        rate: Number(e.target.value),
-                        totalPrice:
-                          Number(e.target.value) * itemInData.quantity,
-                      });
-                    }}
-                    value={itemInData.rate.toString()}
+                    startContent="₹"
+                    isReadOnly
+                    value={itemStockData.rate.toString()}
                     isRequired
                   />
                 </div>
@@ -205,63 +185,87 @@ export const EditItemInModal = ({
                   label="Purchase Date"
                   hideTimeZone
                   showMonthAndYearPickers
-                  timeInputProps={{}}
                   value={fromDate(
-                    new Date((itemInData?.purchaseDate?.seconds ?? 0) * 1000),
+                    new Date(
+                      (itemStockData?.purchaseDate?.seconds ?? 0) * 1000
+                    ),
                     getLocalTimeZone()
                   )}
-                  onChange={(e) => {
-                    setItemInData((value) => {
-                      return {
-                        ...value,
-                        purchaseDate: convertDateToTimestamp(e.toDate()),
-                      };
-                    });
-                  }}
+                  isReadOnly
+                  isRequired
+                />
+                <DatePicker
+                  label="Issue Date"
+                  hideTimeZone
+                  showMonthAndYearPickers
+                  value={
+                    itemStockData?.issueDate?.seconds
+                      ? fromDate(
+                          new Date(
+                            (itemStockData?.issueDate?.seconds ?? 0) * 1000
+                          ),
+                          getLocalTimeZone()
+                        )
+                      : null
+                  }
+                  isReadOnly
                   isRequired
                 />
                 <Input
                   type="number"
                   label="Total Price"
                   contentEditable={false}
-                  value={(itemInData.quantity * itemInData.rate).toString()}
+                  startContent="₹"
+                  color={
+                    itemStockData.rate > selectedItem.rate
+                      ? "danger"
+                      : "default"
+                  }
+                  value={(
+                    itemStockData.quantity * itemStockData.rate
+                  ).toString()}
+                  isReadOnly
                   isRequired
                 />
                 <Input
                   type="text"
                   label="Remarks (Optional)"
                   onChange={(e) => {
-                    setItemInData({
-                      ...itemInData,
+                    setItemStockData({
+                      ...itemStockData,
                       remarks: e.target.value,
                     });
                   }}
-                  value={itemInData.remarks}
+                  value={itemStockData.remarks}
                 />
               </ModalBody>
               <ModalFooter>
                 <Button
-                  color="danger"
+                  color="secondary"
                   onPress={() => {
-                    // updateItemIn(itemInData);
+                    setIsSendingBack(true);
+                    sendOutItemToInItem(itemStockData).finally(() => {
+                      setIsSendingBack(false);
+                      onClose();
+                    });
                   }}
                   className="w-full"
-                  isDisabled={isSubmiting}
-                  // isLoading={isSubmiting}
+                  isDisabled={isDissabled}
+                  isLoading={isSendingBack}
                 >
-                  Delete
+                  Send Back To Stock
                 </Button>
                 <Button
                   color="primary"
                   onPress={() => {
                     setIsSubmiting(true);
-                    updateItemIn(itemInData).finally(() => {
+                    updateItemOut(itemStockData).finally(() => {
                       setIsSubmiting(false);
                       onClose();
                     });
                   }}
-                  isDisabled={isSubmiting}
                   className="w-full"
+                  isDisabled={isDissabled}
                   isLoading={isSubmiting}
                 >
                   Save Changes
