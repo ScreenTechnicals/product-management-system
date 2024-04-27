@@ -17,6 +17,7 @@ import {
 import { collection, limit, orderBy, query } from "firebase/firestore";
 import { useState } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
+import { twJoin } from "tailwind-merge";
 
 type QueryFiltersType = {
   orderBy: string;
@@ -24,7 +25,11 @@ type QueryFiltersType = {
   limit: number;
 };
 
-var slno = 1;
+type ItemsStockTableProps = {
+  onOpenEditModal: () => void;
+  onOpenIssueModal: () => void;
+  setSelectedItem: (item: ItemType) => void;
+};
 
 const tableHeaders = [
   {
@@ -33,7 +38,7 @@ const tableHeaders = [
   },
   {
     key: "id",
-    value: "Ref. Id",
+    value: "Item Id",
   },
   {
     key: "itemName",
@@ -53,11 +58,11 @@ const tableHeaders = [
   },
   {
     key: "rate",
-    value: "Rate",
+    value: "Rate (in ₹)",
   },
   {
     key: "totalPrice",
-    value: "Total Price",
+    value: "Total Price (in ₹)",
   },
   {
     key: "requisitionBy",
@@ -81,12 +86,18 @@ const tableHeaders = [
   },
 ];
 
-export const ItemsStockTable = () => {
+export const ItemsStockTable = ({
+  onOpenEditModal,
+  onOpenIssueModal,
+  setSelectedItem,
+}: ItemsStockTableProps) => {
   const [queryFilters, setQueryFilters] = useState<QueryFiltersType>({
     orderBy: "id",
     orderDirection: "desc",
     limit: 15,
   });
+
+  let slno = 1;
 
   const itemsStockRef = collection(db, "items-stock");
   const itemsStockRefQuery = query(
@@ -139,7 +150,14 @@ export const ItemsStockTable = () => {
     >
       <TableHeader>
         {tableHeaders.map((item) => {
-          return <TableColumn key={item.key}>{item.value}</TableColumn>;
+          return (
+            <TableColumn
+              key={item.key}
+              className={twJoin(item.key === "actions" && "text-center")}
+            >
+              {item.value}
+            </TableColumn>
+          );
         })}
       </TableHeader>
       <TableBody
@@ -158,6 +176,18 @@ export const ItemsStockTable = () => {
                     ).toDateString()}
                   </TableCell>
                 );
+              }
+              if (columnKey === "issueDate") {
+                return (
+                  <TableCell>
+                    {getKeyValue(item, columnKey)?.seconds !== undefined ||
+                    getKeyValue(item, columnKey)?.seconds === ""
+                      ? new Date(
+                          getKeyValue(item, columnKey)?.seconds * 1000
+                        ).toDateString()
+                      : "- - -"}
+                  </TableCell>
+                );
               } else if (columnKey === "id") {
                 return (
                   <TableCell
@@ -171,18 +201,40 @@ export const ItemsStockTable = () => {
                 );
               } else if (columnKey === "slno") {
                 return <TableCell>({slno++})</TableCell>;
+              } else if (columnKey === "rate") {
+                const rate = new Intl.NumberFormat("en-IN").format(
+                  parseFloat(getKeyValue(item, columnKey))
+                );
+                return <TableCell>{rate}</TableCell>;
+              } else if (columnKey === "totalPrice") {
+                const totalPrice = new Intl.NumberFormat("en-IN").format(
+                  parseFloat(getKeyValue(item, columnKey))
+                );
+                return <TableCell>{totalPrice}</TableCell>;
               } else if (columnKey === "actions") {
                 return (
-                  <TableCell>
+                  <TableCell className="flex items-center justify-center gap-4">
                     <Button
                       variant="flat"
                       color="primary"
                       size="sm"
                       onClick={() => {
-                        console.log("Delete", item.id);
+                        setSelectedItem(item);
+                        onOpenEditModal();
                       }}
                     >
                       Edit
+                    </Button>
+                    <Button
+                      variant="flat"
+                      color="secondary"
+                      size="sm"
+                      onClick={() => {
+                        setSelectedItem(item);
+                        onOpenIssueModal();
+                      }}
+                    >
+                      Issue
                     </Button>
                   </TableCell>
                 );

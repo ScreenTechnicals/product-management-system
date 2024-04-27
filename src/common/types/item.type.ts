@@ -11,6 +11,6 @@ export type ItemType = {
   totalPrice: number;
   purchaseDate: Timestamp | undefined;
   issueDate?: Timestamp | undefined;
-  ref?: string;
+  stockRef?: string;
   remarks?: string;
 };

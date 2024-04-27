@@ -5,14 +5,14 @@ import { doc, setDoc } from "firebase/firestore";
 export const AddItemIn = async (item: ItemType) => {
   try {
     await setDoc(
-      doc(db, "items-in", item.id),
+      doc(db, "items-in", item.id.toUpperCase()),
       {
         ...item,
       },
       { merge: true }
     );
     await setDoc(
-      doc(db, "items-stock", item.id),
+      doc(db, "items-stock", item.id.toUpperCase()),
       {
         ...item,
         issueDate: "",

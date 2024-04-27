@@ -28,8 +28,6 @@ type ItemsInTableProps = {
   setSelectedItem: (item: ItemType) => void;
 };
 
-var slno = 1;
-
 const tableHeaders = [
   {
     key: "slno",
@@ -37,7 +35,7 @@ const tableHeaders = [
   },
   {
     key: "id",
-    value: "Ref. Id",
+    value: "Item Id",
   },
   {
     key: "itemName",
@@ -57,11 +55,11 @@ const tableHeaders = [
   },
   {
     key: "rate",
-    value: "Rate",
+    value: "Rate (in ₹)",
   },
   {
     key: "totalPrice",
-    value: "Total Price",
+    value: "Total Price (in ₹)",
   },
   {
     key: "requisitionBy",
@@ -90,6 +88,8 @@ export const ItemsInTable = ({
     orderDirection: "desc",
     limit: 15,
   });
+
+  let slno = 1;
 
   const itemsInRef = collection(db, "items-in");
   const itemsInRefQuery = query(
@@ -139,6 +139,7 @@ export const ItemsInTable = ({
       }
       classNames={{
         base: "max-h-[80svh] overflow-auto",
+        // table: "min-h-[420px]",
       }}
     >
       <TableHeader>
@@ -175,6 +176,16 @@ export const ItemsInTable = ({
                 );
               } else if (columnKey === "slno") {
                 return <TableCell>({slno++})</TableCell>;
+              } else if (columnKey === "rate") {
+                const rate = new Intl.NumberFormat("en-IN").format(
+                  parseFloat(getKeyValue(item, columnKey))
+                );
+                return <TableCell>{rate}</TableCell>;
+              } else if (columnKey === "totalPrice") {
+                const totalPrice = new Intl.NumberFormat("en-IN").format(
+                  parseFloat(getKeyValue(item, columnKey))
+                );
+                return <TableCell>{totalPrice}</TableCell>;
               } else if (columnKey === "actions") {
                 return (
                   <TableCell>

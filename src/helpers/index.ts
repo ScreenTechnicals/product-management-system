@@ -1,6 +1,5 @@
 export * from './add-item-in.helper';
 export * from './add-item-out.helper';
-export * from './add-item-stock.helper';
 export * from './auth.helper';
 export * from './copy-to-clipboard.helper';
 export * from './delete-item.helper';

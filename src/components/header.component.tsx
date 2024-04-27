@@ -14,23 +14,31 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 
+import { routes } from "@/common/consts";
+import { usePathname } from "next/navigation";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { IoMenuOutline } from "react-icons/io5";
 import { AddItemModal } from "./add-item-modal.componet";
 
 const navLinks = [
-  { title: "Items In", href: "/items/in" },
-  { title: "Items Out", href: "/items/out" },
-  { title: "Items Stock", href: "/items/stock" },
+  { title: routes.dashboard.title, href: routes.dashboard.pathname },
+  { title: routes.itemsIn.title, href: routes.itemsIn.pathname },
+  { title: routes.itemsOut.title, href: routes.itemsOut.pathname },
+  { title: routes.itemsStock.title, href: routes.itemsStock.pathname },
 ];
 
 export const Header = () => {
   const [user] = useAuthState(auth);
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const pathname = usePathname();
+
+  const currentPathTitle = navLinks.find(
+    (link) => link.href === pathname
+  )?.title;
 
   return (
     <header className="w-full sticky flex justify-between items-center z-[10] bg-[#eeeeee] py-5 md:px-10 px-5 top-0 left-0">
-      <ButtonGroup variant="flat">
+      <ButtonGroup variant="flat" className="flex items-center gap-5">
         <Dropdown placement="bottom-end">
           <DropdownTrigger className="rounded-full cursor-pointer outline-none">
             <button className="cursor-pointer">
@@ -51,15 +59,18 @@ export const Header = () => {
             })}
           </DropdownMenu>
         </Dropdown>
+        <span className="text-2xl font-bold text-primary-500">
+          {currentPathTitle}
+        </span>
       </ButtonGroup>
       <div className="flex gap-5">
-        <Button type="button" color="danger" onClick={onOpen}>
+        <Button type="button" color="primary" onClick={onOpen}>
           Add Item
         </Button>
         <ButtonGroup variant="flat">
           <Dropdown placement="bottom-end">
             <DropdownTrigger className="rounded-full cursor-pointer">
-              <Avatar isBordered src={user?.photoURL || ""} />
+              <Avatar color="primary" isBordered src={user?.photoURL || ""} />
             </DropdownTrigger>
             <DropdownMenu
               disallowEmptySelection
