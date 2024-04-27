@@ -28,7 +28,7 @@ const ItemsInPage = () => {
   });
 
   return (
-    <div className="w-full md:px-10 p-5">
+    <div className="w-full md:px-10 p-5 relative">
       <ItemsInTable onOpenModal={onOpen} setSelectedItem={setSelectedItem} />
       <EditItemInModal
         isOpen={isOpen}

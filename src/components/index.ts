@@ -1,4 +1,5 @@
 export * from './add-item-modal.componet';
+export * from './delete-item-modal.component';
 export * from './edit-item-in-modal.component';
 export * from './edit-item-out-modal.component';
 export * from './edit-item-stock-modal.component';
@@ -8,4 +9,6 @@ export * from './items-in-table.component';
 export * from './items-out-table.component';
 export * from './items-stock-table.component';
 export * from './loading.component';
+export * from './profile-modal.component';
+export * from './search-and-download-container.component';
 export * from './sidebar.component';
