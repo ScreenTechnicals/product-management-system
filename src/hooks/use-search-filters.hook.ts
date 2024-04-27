@@ -14,6 +14,7 @@ export const useSearchFilters = (
   filterValue: string | Date | Timestamp
 ) => {
   const dbCollectionRef = collection(db, collectionName);
+
   const dbCollectionQuery = query(
     dbCollectionRef,
     orderBy(filterBy),
