@@ -3,6 +3,7 @@ import * as FileSaver from "file-saver";
 import {
   collection,
   getDocs,
+  orderBy,
   query,
   Timestamp,
   where,
@@ -28,6 +29,7 @@ export const downloadExcel = async (
 
     const dbCollectionQuery = query(
       dbCollectionRef,
+      orderBy(filterBy!),
       where(filterBy!, ">=", fromDate),
       where(filterBy!, "<=", toDate)
     );
