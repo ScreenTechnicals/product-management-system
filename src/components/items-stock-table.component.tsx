@@ -155,7 +155,7 @@ export const ItemsStockTable = ({
   const isItemsStockDataSnapshots =
     (itemsStockDataSanpshots ?? [])?.length > 0 &&
     !isItemsStockDataSnapshotsLoading;
-  const isQueryData = queryData?.length === 0 || queryData === undefined;
+  const notQueryData = queryData?.length === 0 || queryData === undefined;
 
   return (
     <div className="flex flex-col gap-3 sticky top-20 left-0">
@@ -173,7 +173,7 @@ export const ItemsStockTable = ({
         isStriped
         aria-label="item table component"
         bottomContent={
-          isQueryData ? (
+          notQueryData ? (
             isItemsStockDataSnapshots ? (
               <div className="flex w-full justify-center">
                 <Button
@@ -223,10 +223,10 @@ export const ItemsStockTable = ({
         </TableHeader>
         <TableBody
           isLoading={
-            isQueryData ? isItemsStockDataSnapshotsLoading : isLoadingQueryData
+            notQueryData ? isItemsStockDataSnapshotsLoading : isLoadingQueryData
           }
           items={
-            isQueryData
+            notQueryData
               ? JSON.parse(JSON.stringify(itemsStockDataSanpshots ?? []))
               : JSON.parse(JSON.stringify(queryData ?? []))
           }

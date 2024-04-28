@@ -99,6 +99,7 @@ export const SearchAndDownloadContainer = ({
                   onClick={() => {
                     setSelectedFilterOption(item);
                     setSearchValue("");
+                    setSelectedFilterValue("");
                   }}
                   key={item.key}
                 >
