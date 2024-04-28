@@ -15,7 +15,7 @@ export const updateItemIn = async (item: ItemType) => {
       itemType: item.itemType,
       partyName: item.partyName,
       requisitionBy: item.requisitionBy,
-      purchaseDate: item.purchaseDate,
+      purchaseDate: new Date((item?.purchaseDate?.seconds ?? 0) * 1000),
       quantity: item.quantity,
       rate: item.rate,
       totalPrice: item.totalPrice,
@@ -32,7 +32,7 @@ export const updateItemIn = async (item: ItemType) => {
         itemType: item.itemType,
         partyName: item.partyName,
         requisitionBy: item.requisitionBy,
-        purchaseDate: item.purchaseDate,
+        purchaseDate: new Date((item?.purchaseDate?.seconds ?? 0) * 1000),
         quantity: item.quantity,
         rate: item.rate,
         totalPrice: item.totalPrice,
@@ -45,7 +45,7 @@ export const updateItemIn = async (item: ItemType) => {
         itemType: item.itemType,
         partyName: item.partyName,
         requisitionBy: item.requisitionBy,
-        purchaseDate: item.purchaseDate,
+        purchaseDate: new Date((item?.purchaseDate?.seconds ?? 0) * 1000),
         remarks: item.remarks,
       });
       toast.success("Stocks Updated Successfully!");

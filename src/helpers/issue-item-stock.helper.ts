@@ -31,12 +31,13 @@ export const issueItemStock = async (item: ItemType) => {
       {
         ...item,
         purchaseDate: itemStockSnap?.data()?.purchaseDate,
+        issueDate: new Date((item?.issueDate?.seconds ?? 0) * 1000),
       },
       { merge: true }
     );
 
     await updateDoc(itemStockRef, {
-      issueDate: item.issueDate,
+      issueDate: new Date((item?.issueDate?.seconds ?? 0) * 1000),
       quantity: itemStockSnap?.data()?.quantity - item.quantity,
       rate: item.rate,
       totalPrice: (itemStockSnap?.data()?.quantity - item.quantity) * item.rate,
@@ -47,7 +48,6 @@ export const issueItemStock = async (item: ItemType) => {
     return true;
   } catch (error) {
     console.log(error);
-
     toast.error("Something Went Wrong!");
     return false;
   }

@@ -255,6 +255,7 @@ export const IssueItemStockModal = ({
                     });
                   }}
                   value={itemStockData.remarks}
+                  isReadOnly
                 />
               </ModalBody>
               <ModalFooter>

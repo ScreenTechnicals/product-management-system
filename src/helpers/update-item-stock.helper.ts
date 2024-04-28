@@ -20,8 +20,10 @@ export const updateItemStock = async (item: ItemType) => {
       itemType: item.itemType,
       partyName: item.partyName,
       requisitionBy: item.requisitionBy,
-      purchaseDate: item.purchaseDate,
-      issueDate: itemStockSnap?.data()?.issueDate ? item.issueDate : "",
+      purchaseDate: new Date((item?.purchaseDate?.seconds ?? 0) * 1000),
+      issueDate: itemStockSnap?.data()?.issueDate
+        ? new Date((item?.issueDate?.seconds ?? 0) * 1000)
+        : "",
       quantity: item.quantity,
       rate: item.rate,
       totalPrice: item.totalPrice,
@@ -39,7 +41,7 @@ export const updateItemStock = async (item: ItemType) => {
         itemType: item.itemType,
         partyName: item.partyName,
         requisitionBy: item.requisitionBy,
-        purchaseDate: item.purchaseDate,
+        purchaseDate: new Date((item?.purchaseDate?.seconds ?? 0) * 1000),
         quantity: item.quantity,
         rate: item.rate,
         totalPrice: item.totalPrice,
@@ -52,7 +54,7 @@ export const updateItemStock = async (item: ItemType) => {
         itemType: item.itemType,
         partyName: item.partyName,
         requisitionBy: item.requisitionBy,
-        purchaseDate: item.purchaseDate,
+        purchaseDate: new Date((item?.purchaseDate?.seconds ?? 0) * 1000),
         remarks: item.remarks,
       });
       toast.success("Items-In Updated Successfully!");
