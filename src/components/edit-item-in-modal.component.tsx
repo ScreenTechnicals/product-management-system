@@ -249,7 +249,6 @@ export const EditItemInModal = ({
                   }}
                   className="w-full"
                   isDisabled={isSubmiting}
-                  // isLoading={isSubmiting}
                 >
                   Delete
                 </Button>

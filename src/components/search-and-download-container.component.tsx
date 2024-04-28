@@ -1,5 +1,5 @@
 import { SearchFilterType } from "@/common/types";
-import { convertDateToTimestamp, downloadExcel } from "@/helpers";
+import { convertDateToTimestamp } from "@/helpers";
 import {
   Button,
   DatePicker,
@@ -11,6 +11,7 @@ import {
 } from "@nextui-org/react";
 import { Timestamp } from "firebase/firestore";
 import { IoFilter, IoSearch } from "react-icons/io5";
+import { SiMicrosoftexcel } from "react-icons/si";
 
 type SearchAndDownloadContainerProps = {
   itemsDataSanpshots: any;
@@ -20,6 +21,7 @@ type SearchAndDownloadContainerProps = {
   setSearchValue: (value: any) => void;
   setSelectedFilterOption: (value: any) => void;
   setSelectedFilterValue: (value: string | Timestamp) => void;
+  onOpenDownloadModal: () => void;
 };
 
 export const SearchAndDownloadContainer = ({
@@ -30,19 +32,20 @@ export const SearchAndDownloadContainer = ({
   setSearchValue,
   setSelectedFilterOption,
   setSelectedFilterValue,
+  onOpenDownloadModal,
 }: SearchAndDownloadContainerProps) => {
   return (
     <div className="flex items-center justify-between gap-2 md:gap-5 bg-white p-3 rounded-xl shadow-sm">
       <Button
         variant="flat"
-        onClick={() => {
-          downloadExcel(itemsInDataSanpshots, "items-in", "items-in");
-        }}
+        className="md:flex hidden"
+        onClick={onOpenDownloadModal}
         color="success"
+        startContent={<SiMicrosoftexcel size={20} />}
       >
-        Download
+        Download Excel
       </Button>
-      <div className="flex items-center gap-2 md:gap-5 md:w-1/2">
+      <div className="flex items-center gap-2 md:gap-5 md:w-1/2 w-full">
         {selectedFilterOption.type !== "date" ? (
           <Input
             type={selectedFilterOption.type}

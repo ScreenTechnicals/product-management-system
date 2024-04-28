@@ -46,7 +46,7 @@ export const Header = () => {
   } = useDisclosure();
 
   return (
-    <header className="w-full sticky flex justify-between items-center z-[10] bg-[#eeeeee] py-5 md:px-10 px-5 top-0 left-0">
+    <header className="w-full sticky flex justify-between items-center z-[10] bg-[#eeeeee] pt-5 md:py-5 md:px-10 px-5 top-0 left-0">
       <ButtonGroup variant="flat" className="flex items-center gap-1 md:gap-5">
         <Dropdown placement="bottom-end">
           <DropdownTrigger className="rounded-full cursor-pointer outline-none">

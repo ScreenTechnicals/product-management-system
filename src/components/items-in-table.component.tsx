@@ -14,6 +14,7 @@ import {
   TableColumn,
   TableHeader,
   TableRow,
+  useDisclosure,
 } from "@nextui-org/react";
 import {
   collection,
@@ -24,6 +25,8 @@ import {
 } from "firebase/firestore";
 import { useState } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
+import { SiMicrosoftexcel } from "react-icons/si";
+import { DownloadItemsModal } from "./download-items-modal.component";
 import { SearchAndDownloadContainer } from "./search-and-download-container.component";
 
 type QueryFiltersType = {
@@ -145,9 +148,12 @@ export const ItemsInTable = ({
     (itemsInDataSanpshots ?? [])?.length > 0 && !isItemsInDataSnapshotsLoading;
   const isQueryData = queryData?.length === 0 || queryData === undefined;
 
+  const { isOpen, onClose, onOpen, onOpenChange } = useDisclosure();
+
   return (
     <div className="flex flex-col gap-3 sticky top-20 left-0">
       <SearchAndDownloadContainer
+        onOpenDownloadModal={onOpen}
         itemsDataSanpshots={isItemsInDataSnapshots}
         searchFilters={searchFilters}
         searchValue={searchValue}
@@ -195,8 +201,7 @@ export const ItemsInTable = ({
           )
         }
         classNames={{
-          base: "max-h-[75svh] overflow-auto py-3",
-          // table: "min-h-[100px]",
+          base: "md:max-h-[80svh] max-h-[70svh]  overflow-auto py-3",
         }}
       >
         <TableHeader>
@@ -281,6 +286,20 @@ export const ItemsInTable = ({
           )}
         </TableBody>
       </Table>
+      <Button
+        variant="shadow"
+        className="md:hidden"
+        onClick={onOpen}
+        color="success"
+        startContent={<SiMicrosoftexcel size={20} />}
+      >
+        Download Excel
+      </Button>
+      <DownloadItemsModal
+        isOpen={isOpen}
+        onClose={onClose}
+        onOpenChange={onOpenChange}
+      />
     </div>
   );
 };
