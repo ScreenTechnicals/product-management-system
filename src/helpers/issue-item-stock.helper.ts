@@ -30,6 +30,7 @@ export const issueItemStock = async (item: ItemType) => {
       doc(db, "items-out", item.id),
       {
         ...item,
+        purchaseDate: itemStockSnap?.data()?.purchaseDate,
       },
       { merge: true }
     );

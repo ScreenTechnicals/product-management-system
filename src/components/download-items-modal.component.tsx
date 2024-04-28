@@ -20,7 +20,7 @@ import {
   ModalHeader,
   ModalProps,
 } from "@nextui-org/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BiChevronDown } from "react-icons/bi";
 import { SiMicrosoftexcel } from "react-icons/si";
 
@@ -45,6 +45,7 @@ export const DownloadItemsModal = ({
   onClose,
   onOpenChange,
 }: ProfileModalProps) => {
+  const [downloading, setDownloading] = useState(false);
   const [downloadExcelParams, setDownloadExcelParams] =
     useState<DownloadExcelProps>({
       fromDate: undefined,
@@ -52,13 +53,34 @@ export const DownloadItemsModal = ({
       filterBy: undefined,
       collectionName: undefined,
     });
-  const itemsType = collectionNames.filter((item) => {
+  let itemsType = collectionNames.filter((item) => {
     return item.key === downloadExcelParams.collectionName;
   })[0]?.value;
 
-  const filterType = filterOptions.filter((item) => {
+  let filterType = filterOptions.filter((item) => {
     return item.key === downloadExcelParams.filterBy;
   })[0]?.value;
+
+  let isFromDateInvalid =
+    downloadExcelParams.toDate !== undefined &&
+    downloadExcelParams.fromDate !== undefined &&
+    (downloadExcelParams.fromDate ?? 0) > (downloadExcelParams.toDate ?? 1);
+
+  let isToDateInvalid =
+    downloadExcelParams.toDate !== undefined &&
+    downloadExcelParams.fromDate !== undefined &&
+    (downloadExcelParams.fromDate ?? 0) > (downloadExcelParams.toDate ?? 1);
+
+  useEffect(() => {
+    if (!isOpen) {
+      setDownloadExcelParams({
+        fromDate: undefined,
+        toDate: undefined,
+        filterBy: undefined,
+        collectionName: undefined,
+      });
+    }
+  }, [isOpen]);
 
   return (
     <>
@@ -113,6 +135,14 @@ export const DownloadItemsModal = ({
                                     collectionName: item.key,
                                   };
                                 });
+                                if (item.key === "items-in") {
+                                  setDownloadExcelParams((value) => {
+                                    return {
+                                      ...value,
+                                      filterBy: "purchaseDate",
+                                    };
+                                  });
+                                }
                               }}
                               key={item.key}
                             >
@@ -150,6 +180,10 @@ export const DownloadItemsModal = ({
                         {(item) => {
                           return (
                             <DropdownItem
+                              hidden={
+                                itemsType === "Items In" &&
+                                item.key === "issueDate"
+                              }
                               onClick={() => {
                                 setDownloadExcelParams((value) => {
                                   return {
@@ -168,6 +202,11 @@ export const DownloadItemsModal = ({
                     </Dropdown>
                   </div>
                   <DatePicker
+                    isInvalid={isFromDateInvalid}
+                    errorMessage={
+                      isFromDateInvalid &&
+                      "From date should be less than To date"
+                    }
                     label="From"
                     hideTimeZone
                     fullWidth
@@ -191,6 +230,11 @@ export const DownloadItemsModal = ({
                     fullWidth
                     color="primary"
                     showMonthAndYearPickers
+                    isInvalid={isToDateInvalid}
+                    errorMessage={
+                      isToDateInvalid &&
+                      "To date should be greater than From date"
+                    }
                     onChange={(e) => {
                       setDownloadExcelParams((value) => {
                         return {
@@ -210,7 +254,10 @@ export const DownloadItemsModal = ({
                   variant="shadow"
                   fullWidth
                   className="text-white"
+                  isLoading={downloading}
                   onClick={() => {
+                    // if(downloadExcelParams.fromDate)
+                    setDownloading(true);
                     downloadExcel(
                       downloadExcelParams.fromDate,
                       downloadExcelParams.toDate,
@@ -224,12 +271,14 @@ export const DownloadItemsModal = ({
                         collectionName: undefined,
                       });
                       onClose();
+                      itemsType = "";
+                      setDownloading(false);
                     });
                   }}
                   color="success"
                   startContent={<SiMicrosoftexcel size={20} />}
                 >
-                  Download Excel
+                  {downloading ? "Downloading" : "Download Excel"}
                 </Button>
               </ModalFooter>
             </>

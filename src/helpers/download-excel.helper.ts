@@ -93,7 +93,9 @@ export const downloadExcel = async (
 
     const fileName = `${collectionName}-${new Date(
       (fromDate?.seconds ?? 0) * 1000
-    )}-${new Date((toDate?.seconds ?? 0) * 1000)}`;
+    ).toLocaleDateString()}-${new Date(
+      (toDate?.seconds ?? 0) * 1000
+    ).toLocaleDateString()}`;
 
     const fileType =
       "application/vnd.openxmlformats-officedocument.spreadsheet;charset=utf-8";
