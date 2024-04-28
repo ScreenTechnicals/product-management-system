@@ -10,6 +10,7 @@ import {
   Input,
 } from "@nextui-org/react";
 import { Timestamp } from "firebase/firestore";
+import { useEffect } from "react";
 import { IoFilter, IoSearch } from "react-icons/io5";
 import { SiMicrosoftexcel } from "react-icons/si";
 
@@ -34,6 +35,12 @@ export const SearchAndDownloadContainer = ({
   setSelectedFilterValue,
   onOpenDownloadModal,
 }: SearchAndDownloadContainerProps) => {
+  useEffect(() => {
+    if (searchValue === "") {
+      setSelectedFilterValue("");
+    }
+  }, [searchValue]);
+
   return (
     <div className="flex items-center justify-between gap-2 md:gap-5 bg-white p-3 rounded-xl shadow-sm">
       <Button
