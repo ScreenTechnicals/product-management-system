@@ -43,59 +43,66 @@ export const DropdownItems = ({
   const data = itemData[itemDataKey];
 
   return (
-    <Dropdown>
-      <DropdownTrigger>
-        <Button className="py-7 w-1/2">
-          <span className="capitalize">
-            {data.length === 0 ? dropdownType.replace("_", " ") : data}
-          </span>
-          <BiChevronDown />
-        </Button>
-      </DropdownTrigger>
-      <DropdownMenu variant="flat" aria-label="Dynamic Actions" items={items}>
-        {(item) => {
-          return (
-            <DropdownItem
-              onClick={() => {
-                if (item.label === "add_new") {
-                  setCollectionName(collectionName);
-                  onOpenAddDropdownItemModal();
-                  return;
+    <div className="w-full relative">
+      {data.length > 0 && (
+        <p className="text-xs pl-1 capitalize">
+          {dropdownType.replace("_", " ")}
+        </p>
+      )}
+      <Dropdown>
+        <DropdownTrigger>
+          <Button fullWidth className="py-7">
+            <span className="capitalize">
+              {data.length === 0 ? dropdownType.replace("_", " ") : data}
+            </span>
+            <BiChevronDown />
+          </Button>
+        </DropdownTrigger>
+        <DropdownMenu variant="flat" aria-label="Dynamic Actions" items={items}>
+          {(item) => {
+            return (
+              <DropdownItem
+                onClick={() => {
+                  if (item.label === "add_new") {
+                    setCollectionName(collectionName);
+                    onOpenAddDropdownItemModal();
+                    return;
+                  }
+                  setItemData((value) => {
+                    return {
+                      ...value,
+                      [itemDataKey]: item.value,
+                    };
+                  });
+                }}
+                key={item.label}
+                className={twMerge(
+                  item.label === "add_new" && "bg-success-500 text-white"
+                )}
+                endContent={
+                  item.label !== "add_new" && (
+                    <Button
+                      isIconOnly
+                      radius="full"
+                      variant="flat"
+                      size="sm"
+                      color="secondary"
+                      onPress={() => {
+                        setSelectedDropdownItem(item);
+                        onOpenEditDropdownItemModal();
+                      }}
+                    >
+                      <MdEdit />
+                    </Button>
+                  )
                 }
-                setItemData((value) => {
-                  return {
-                    ...value,
-                    [itemDataKey]: item.value,
-                  };
-                });
-              }}
-              key={item.label}
-              className={twMerge(
-                item.label === "add_new" && "bg-success-500 text-white"
-              )}
-              endContent={
-                item.label !== "add_new" && (
-                  <Button
-                    isIconOnly
-                    radius="full"
-                    variant="flat"
-                    size="sm"
-                    color="secondary"
-                    onPress={() => {
-                      setSelectedDropdownItem(item);
-                      onOpenEditDropdownItemModal();
-                    }}
-                  >
-                    <MdEdit />
-                  </Button>
-                )
-              }
-            >
-              {item.value}
-            </DropdownItem>
-          );
-        }}
-      </DropdownMenu>
-    </Dropdown>
+              >
+                {item.value}
+              </DropdownItem>
+            );
+          }}
+        </DropdownMenu>
+      </Dropdown>
+    </div>
   );
 };
