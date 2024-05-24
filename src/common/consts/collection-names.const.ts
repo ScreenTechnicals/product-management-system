@@ -2,15 +2,15 @@ import { LabelOptionType } from "../types";
 
 export const collectionNames: LabelOptionType[] = [
   {
-    key: "items-in",
+    label: "items-in",
     value: "Items In",
   },
   {
-    key: "items-out",
+    label: "items-out",
     value: "Items Out",
   },
   {
-    key: "items-stock",
+    label: "items-stock",
     value: "Items Stock",
   },
 ] as const;

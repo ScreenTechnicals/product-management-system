@@ -1,8 +1,8 @@
 "use client";
 
 import { itemTypes } from "@/common/consts";
-import { partyNames } from "@/common/consts/party-names.const";
-import { ItemType } from "@/common/types";
+import { ItemType, LabelOptionType } from "@/common/types";
+import { db } from "@/configs";
 import { AddItemIn, convertDateToTimestamp } from "@/helpers";
 import {
   Button,
@@ -19,19 +19,30 @@ import {
   ModalHeader,
   ModalProps,
 } from "@nextui-org/react";
-import { useState } from "react";
+import { collection, orderBy, query } from "firebase/firestore";
+import { Dispatch, SetStateAction, useMemo, useState } from "react";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 import toast from "react-hot-toast";
 import { BiChevronDown } from "react-icons/bi";
+import { MdEdit } from "react-icons/md";
+import { twMerge } from "tailwind-merge";
 
 type AddItemModalProps = Pick<
   ModalProps,
   "isOpen" | "onClose" | "onOpenChange"
->;
+> & {
+  onOpenNewPartyModal: Dispatch<SetStateAction<void>>;
+  onOpenEditPartyModal: Dispatch<SetStateAction<void>>;
+  setSelectedPartyName: Dispatch<SetStateAction<LabelOptionType>>;
+};
 
 export const AddItemModal = ({
   isOpen,
   onClose,
   onOpenChange,
+  onOpenNewPartyModal,
+  onOpenEditPartyModal,
+  setSelectedPartyName,
 }: AddItemModalProps) => {
   const [itemInData, setItemInData] = useState<ItemType>({
     id: Date.now().toString(),
@@ -45,6 +56,25 @@ export const AddItemModal = ({
     totalPrice: 0,
     remarks: "",
   });
+  const partyNamesRef = collection(db, "party-names");
+  const queryPartyNames = query(partyNamesRef, orderBy("value"));
+  const [partyNameSnapshots, isLoadingPartyNameSpanshots] =
+    useCollectionData(queryPartyNames);
+
+  const partyNames = useMemo(() => {
+    let localPartyNames: LabelOptionType[] = [
+      {
+        label: "add_new",
+        value: "Add New",
+      },
+    ];
+    if (!isLoadingPartyNameSpanshots) {
+      partyNameSnapshots?.forEach((item) => {
+        localPartyNames.push(item as LabelOptionType);
+      });
+    }
+    return localPartyNames;
+  }, [isLoadingPartyNameSpanshots, partyNameSnapshots]);
 
   const [isSubmiting, setIsSubmiting] = useState(false);
 
@@ -172,12 +202,37 @@ export const AddItemModal = ({
                         return (
                           <DropdownItem
                             onClick={() => {
+                              if (item.label === "add_new") {
+                                onOpenNewPartyModal();
+                                return;
+                              }
                               setItemInData({
                                 ...itemInData,
                                 partyName: item.value,
                               });
                             }}
                             key={item.label}
+                            className={twMerge(
+                              item.label === "add_new" &&
+                                "bg-success-500 text-white"
+                            )}
+                            endContent={
+                              item.label !== "add_new" && (
+                                <Button
+                                  isIconOnly
+                                  radius="full"
+                                  variant="flat"
+                                  size="sm"
+                                  color="secondary"
+                                  onPress={() => {
+                                    setSelectedPartyName(item);
+                                    onOpenEditPartyModal();
+                                  }}
+                                >
+                                  <MdEdit />
+                                </Button>
+                              )
+                            }
                           >
                             {item.value}
                           </DropdownItem>

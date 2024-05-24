@@ -1,5 +1,9 @@
 export const partyNames = [
   {
+    label: "add_new",
+    value: "Add New",
+  },
+  {
     label: "atom_engg",
     value: "Atom Engg",
   },

@@ -31,11 +31,11 @@ type ProfileModalProps = Pick<
 
 const filterOptions: LabelOptionType[] = [
   {
-    key: "purchaseDate",
+    label: "purchaseDate",
     value: "Purchase Date",
   },
   {
-    key: "issueDate",
+    label: "issueDate",
     value: "Issue Date",
   },
 ];
@@ -54,11 +54,11 @@ export const DownloadItemsModal = ({
       collectionName: undefined,
     });
   let itemsType = collectionNames.filter((item) => {
-    return item.key === downloadExcelParams.collectionName;
+    return item.label === downloadExcelParams.collectionName;
   })[0]?.value;
 
   let filterType = filterOptions.filter((item) => {
-    return item.key === downloadExcelParams.filterBy;
+    return item.label === downloadExcelParams.filterBy;
   })[0]?.value;
 
   let isFromDateInvalid =
@@ -132,10 +132,10 @@ export const DownloadItemsModal = ({
                                 setDownloadExcelParams((value) => {
                                   return {
                                     ...value,
-                                    collectionName: item.key,
+                                    collectionName: item.label,
                                   };
                                 });
-                                if (item.key === "items-in") {
+                                if (item.label === "items-in") {
                                   setDownloadExcelParams((value) => {
                                     return {
                                       ...value,
@@ -144,7 +144,7 @@ export const DownloadItemsModal = ({
                                   });
                                 }
                               }}
-                              key={item.key}
+                              key={item.label}
                             >
                               {item.value}
                             </DropdownItem>
@@ -182,17 +182,17 @@ export const DownloadItemsModal = ({
                             <DropdownItem
                               hidden={
                                 itemsType === "Items In" &&
-                                item.key === "issueDate"
+                                item.label === "issueDate"
                               }
                               onClick={() => {
                                 setDownloadExcelParams((value) => {
                                   return {
                                     ...value,
-                                    filterBy: item.key,
+                                    filterBy: item.label,
                                   };
                                 });
                               }}
-                              key={item.key}
+                              key={item.label}
                             >
                               {item.value}
                             </DropdownItem>

@@ -15,11 +15,15 @@ import {
 } from "@nextui-org/react";
 
 import { routes } from "@/common/consts";
+import { LabelOptionType } from "@/common/types";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { CgProfile } from "react-icons/cg";
 import { IoLogOutOutline, IoMenuOutline } from "react-icons/io5";
 import { AddItemModal } from "./add-item-modal.componet";
+import { AddNewPartNameModal } from "./add-new-party-name-modal.component";
+import { EditNewPartNameModal } from "./edit-party-name-modal.component";
 import { ProfileModal } from "./profile-modal.component";
 
 const navLinks = [
@@ -32,6 +36,19 @@ const navLinks = [
 export const Header = () => {
   const [user] = useAuthState(auth);
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenNewPartyModal,
+    onOpen: onOpenNewPartyModal,
+    onOpenChange: onOpenChangeNewPartyModal,
+    onClose: onCloseNewPartyModal,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenEditPartyModal,
+    onOpen: onOpenEditPartyModal,
+    onOpenChange: onOpenChangeEditPartyModal,
+    onClose: onCloseEditPartyModal,
+  } = useDisclosure();
+
   const pathname = usePathname();
 
   const currentPathTitle = navLinks.find(
@@ -44,6 +61,11 @@ export const Header = () => {
     onClose: onCloseProfile,
     onOpenChange: onOpenChangeProfile,
   } = useDisclosure();
+
+  const [selectedPartyName, setSelectedPartyName] = useState<LabelOptionType>({
+    label: "",
+    value: "",
+  });
 
   return (
     <header className="w-full sticky flex justify-between items-center z-[10] bg-[#eeeeee] pt-5 md:py-5 md:px-10 px-5 top-0 left-0">
@@ -114,6 +136,20 @@ export const Header = () => {
         isOpen={isOpen}
         onClose={onClose}
         onOpenChange={onOpenChange}
+        onOpenNewPartyModal={onOpenNewPartyModal}
+        onOpenEditPartyModal={onOpenEditPartyModal}
+        setSelectedPartyName={setSelectedPartyName}
+      />
+      <AddNewPartNameModal
+        isOpen={isOpenNewPartyModal}
+        onClose={onCloseNewPartyModal}
+        onOpenChange={onOpenChangeNewPartyModal}
+      />
+      <EditNewPartNameModal
+        isOpen={isOpenEditPartyModal}
+        onClose={onCloseEditPartyModal}
+        onOpenChange={onOpenChangeEditPartyModal}
+        partyName={selectedPartyName}
       />
       <ProfileModal
         isOpen={isOpenProfile}

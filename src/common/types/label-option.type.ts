@@ -1,4 +1,4 @@
 export type LabelOptionType = {
-  key: string;
+  label: string;
   value: string;
 };
