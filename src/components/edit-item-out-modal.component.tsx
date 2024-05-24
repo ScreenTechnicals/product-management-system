@@ -238,7 +238,10 @@ export const EditItemOutModal = ({
                     });
                   }}
                   className="w-full"
-                  isDisabled={isDissabled}
+                  isDisabled={
+                    isDissabled ||
+                    itemOutData.quantity !== selectedItem.quantity
+                  }
                   isLoading={isSubmiting}
                 >
                   Save Changes
