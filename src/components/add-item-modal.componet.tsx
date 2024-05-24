@@ -1,7 +1,6 @@
 "use client";
 
-import { itemTypes } from "@/common/consts";
-import { ItemType, LabelOptionType } from "@/common/types";
+import { CollectionNameType, ItemType, LabelOptionType } from "@/common/types";
 import { db } from "@/configs";
 import { AddItemIn, convertDateToTimestamp } from "@/helpers";
 import {
@@ -31,18 +30,20 @@ type AddItemModalProps = Pick<
   ModalProps,
   "isOpen" | "onClose" | "onOpenChange"
 > & {
-  onOpenNewPartyModal: Dispatch<SetStateAction<void>>;
-  onOpenEditPartyModal: Dispatch<SetStateAction<void>>;
-  setSelectedPartyName: Dispatch<SetStateAction<LabelOptionType>>;
+  onOpenAddDropdownItemModal: Dispatch<SetStateAction<void>>;
+  onOpenEditDropdownItemModal: Dispatch<SetStateAction<void>>;
+  setSelectedDropdownItem: Dispatch<SetStateAction<LabelOptionType>>;
+  setCollectionName: Dispatch<SetStateAction<CollectionNameType>>;
 };
 
 export const AddItemModal = ({
   isOpen,
   onClose,
   onOpenChange,
-  onOpenNewPartyModal,
-  onOpenEditPartyModal,
-  setSelectedPartyName,
+  onOpenAddDropdownItemModal,
+  onOpenEditDropdownItemModal,
+  setSelectedDropdownItem,
+  setCollectionName,
 }: AddItemModalProps) => {
   const [itemInData, setItemInData] = useState<ItemType>({
     id: Date.now().toString(),
@@ -56,10 +57,31 @@ export const AddItemModal = ({
     totalPrice: 0,
     remarks: "",
   });
+
+  const itemsTypeRef = collection(db, "items-type");
+  const queryItemsType = query(itemsTypeRef, orderBy("value"));
+  const [itemsTypeSnapshots, isLoadingItemsTypeSpanshots] =
+    useCollectionData(queryItemsType);
+
   const partyNamesRef = collection(db, "party-names");
   const queryPartyNames = query(partyNamesRef, orderBy("value"));
   const [partyNameSnapshots, isLoadingPartyNameSpanshots] =
     useCollectionData(queryPartyNames);
+
+  const itemsType = useMemo(() => {
+    let localItemTypes: LabelOptionType[] = [
+      {
+        label: "add_new",
+        value: "Add New",
+      },
+    ];
+    if (!isLoadingItemsTypeSpanshots) {
+      itemsTypeSnapshots?.forEach((item) => {
+        localItemTypes.push(item as LabelOptionType);
+      });
+    }
+    return localItemTypes;
+  }, [isLoadingItemsTypeSpanshots, itemsTypeSnapshots]);
 
   const partyNames = useMemo(() => {
     let localPartyNames: LabelOptionType[] = [
@@ -160,18 +182,44 @@ export const AddItemModal = ({
                     <DropdownMenu
                       variant="flat"
                       aria-label="Dynamic Actions"
-                      items={itemTypes}
+                      items={itemsType}
                     >
                       {(item) => {
                         return (
                           <DropdownItem
                             onClick={() => {
+                              if (item.label === "add_new") {
+                                setCollectionName("items-type");
+                                onOpenAddDropdownItemModal();
+                                return;
+                              }
                               setItemInData({
                                 ...itemInData,
-                                itemType: item.value,
+                                partyName: item.value,
                               });
                             }}
                             key={item.label}
+                            className={twMerge(
+                              item.label === "add_new" &&
+                                "bg-success-500 text-white"
+                            )}
+                            endContent={
+                              item.label !== "add_new" && (
+                                <Button
+                                  isIconOnly
+                                  radius="full"
+                                  variant="flat"
+                                  size="sm"
+                                  color="secondary"
+                                  onPress={() => {
+                                    setSelectedDropdownItem(item);
+                                    onOpenEditDropdownItemModal();
+                                  }}
+                                >
+                                  <MdEdit />
+                                </Button>
+                              )
+                            }
                           >
                             {item.value}
                           </DropdownItem>
@@ -203,7 +251,8 @@ export const AddItemModal = ({
                           <DropdownItem
                             onClick={() => {
                               if (item.label === "add_new") {
-                                onOpenNewPartyModal();
+                                setCollectionName("party-names");
+                                onOpenAddDropdownItemModal();
                                 return;
                               }
                               setItemInData({
@@ -225,8 +274,8 @@ export const AddItemModal = ({
                                   size="sm"
                                   color="secondary"
                                   onPress={() => {
-                                    setSelectedPartyName(item);
-                                    onOpenEditPartyModal();
+                                    setSelectedDropdownItem(item);
+                                    onOpenEditDropdownItemModal();
                                   }}
                                 >
                                   <MdEdit />

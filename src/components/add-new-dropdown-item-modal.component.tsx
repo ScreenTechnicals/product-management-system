@@ -1,7 +1,7 @@
 "use client";
 
-import { LabelOptionType } from "@/common/types";
-import { addNewParty } from "@/helpers/add-new-party.helper";
+import { CollectionNameType, LabelOptionType } from "@/common/types";
+import { addNewDropDownItem } from "@/helpers/add-drop-down-item.helper";
 import {
   Button,
   Input,
@@ -12,31 +12,30 @@ import {
   ModalHeader,
   ModalProps,
 } from "@nextui-org/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 
-type AddItemModalProps = Pick<
+type AddNewItemToDropDownModalProps = Pick<
   ModalProps,
   "isOpen" | "onClose" | "onOpenChange"
 > & {
-  partyName: LabelOptionType;
+  collectionName: CollectionNameType;
 };
 
-export const EditNewPartNameModal = ({
+export const AddNewItemToDropDownModal = ({
   isOpen,
   onClose,
   onOpenChange,
-  partyName,
-}: AddItemModalProps) => {
-  const [newPartyName, setNewPartyName] = useState<LabelOptionType>({
-    label: partyName.label,
-    value: partyName.value,
+  collectionName,
+}: AddNewItemToDropDownModalProps) => {
+  const [dropdownItem, setDropdownItem] = useState<LabelOptionType>({
+    label: "",
+    value: "",
   });
 
   const [isSubmiting, setIsSubmiting] = useState(false);
 
-  const isDisabledSubmit =
-    newPartyName.label.trim().length === 0 || partyName === newPartyName;
+  const isDisabledSubmit = dropdownItem.label.trim().length === 0;
 
   const handleAddItem = () => {
     if (isDisabledSubmit) {
@@ -44,7 +43,7 @@ export const EditNewPartNameModal = ({
       return;
     }
     setIsSubmiting(true);
-    addNewParty(newPartyName)
+    addNewDropDownItem(dropdownItem, collectionName)
       .then((res) => {
         if (res) {
           setIsSubmiting(false);
@@ -58,16 +57,13 @@ export const EditNewPartNameModal = ({
       .finally(() => {
         setIsSubmiting(false);
         onClose?.();
-        setNewPartyName({
+        setDropdownItem({
           label: "",
           value: "",
         });
       });
   };
 
-  useEffect(() => {
-    setNewPartyName(partyName);
-  }, [partyName]);
   return (
     <>
       <Modal isOpen={isOpen} backdrop="blur" onOpenChange={onOpenChange}>
@@ -75,16 +71,15 @@ export const EditNewPartNameModal = ({
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Edit Party Name
+                Add New Party Name
               </ModalHeader>
               <ModalBody>
                 <Input
                   type="text"
                   label="Enter new party name here"
-                  value={newPartyName.value}
                   onChange={(e) => {
-                    setNewPartyName({
-                      label: partyName.label,
+                    setDropdownItem({
+                      label: Date.now().toString(),
                       value: e.target.value,
                     });
                   }}
@@ -98,7 +93,7 @@ export const EditNewPartNameModal = ({
                   className="w-full"
                   isLoading={isSubmiting}
                 >
-                  Save Changes
+                  Add New
                 </Button>
               </ModalFooter>
             </>
