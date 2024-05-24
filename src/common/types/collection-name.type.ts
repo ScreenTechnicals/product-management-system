@@ -6,5 +6,5 @@ export type CollectionNameType =
   | "party-names"
   | "items-type"
   | "items-name"
-  | "requisition-by"
+  | "requisitions-by"
   | undefined;

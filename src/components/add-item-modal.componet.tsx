@@ -52,6 +52,11 @@ export const AddItemModal = ({
     remarks: "",
   });
 
+  const itemsNameRef = collection(db, "items-name");
+  const queryItemsName = query(itemsNameRef, orderBy("value"));
+  const [itemsNameSnapshots, isLoadingItemsNameSpanshots] =
+    useCollectionData(queryItemsName);
+
   const itemsTypeRef = collection(db, "items-type");
   const queryItemsType = query(itemsTypeRef, orderBy("value"));
   const [itemsTypeSnapshots, isLoadingItemsTypeSpanshots] =
@@ -61,6 +66,26 @@ export const AddItemModal = ({
   const queryPartyNames = query(partyNamesRef, orderBy("value"));
   const [partyNameSnapshots, isLoadingPartyNameSpanshots] =
     useCollectionData(queryPartyNames);
+
+  const requisitionByRef = collection(db, "requisitions-by");
+  const queryRequisitionBy = query(requisitionByRef, orderBy("value"));
+  const [requisitionBySnapshots, isLoadingRequisitionBy] =
+    useCollectionData(queryRequisitionBy);
+
+  const itemsName = useMemo(() => {
+    let localItemNames: LabelOptionType[] = [
+      {
+        label: "add_new",
+        value: "Add New",
+      },
+    ];
+    if (!isLoadingItemsNameSpanshots) {
+      itemsNameSnapshots?.forEach((item) => {
+        localItemNames.push(item as LabelOptionType);
+      });
+    }
+    return localItemNames;
+  }, [isLoadingItemsNameSpanshots, itemsNameSnapshots]);
 
   const itemsType = useMemo(() => {
     let localItemTypes: LabelOptionType[] = [
@@ -91,6 +116,21 @@ export const AddItemModal = ({
     }
     return localPartyNames;
   }, [isLoadingPartyNameSpanshots, partyNameSnapshots]);
+
+  const requisiotionsBy = useMemo(() => {
+    let localRequisiotionsBy: LabelOptionType[] = [
+      {
+        label: "add_new",
+        value: "Add New",
+      },
+    ];
+    if (!isLoadingRequisitionBy) {
+      requisitionBySnapshots?.forEach((item) => {
+        localRequisiotionsBy.push(item as LabelOptionType);
+      });
+    }
+    return localRequisiotionsBy;
+  }, [isLoadingRequisitionBy, requisitionBySnapshots]);
 
   const [isSubmiting, setIsSubmiting] = useState(false);
 
@@ -150,17 +190,16 @@ export const AddItemModal = ({
               </ModalHeader>
               <ModalBody>
                 <div className="flex items-center gap-3">
-                  <Input
-                    type="text"
-                    label="Item Name"
-                    className="w-full"
-                    onChange={(e) => {
-                      setItemInData({
-                        ...itemInData,
-                        itemName: e.target.value,
-                      });
-                    }}
-                    isRequired
+                  <DropdownItems
+                    dropdownType={"item_Name"}
+                    itemData={itemInData}
+                    setItemData={setItemInData}
+                    items={itemsName}
+                    collectionName="items-name"
+                    setCollectionName={setCollectionName}
+                    setSelectedDropdownItem={setSelectedDropdownItem}
+                    onOpenAddDropdownItemModal={onOpenAddDropdownItemModal}
+                    onOpenEditDropdownItemModal={onOpenEditDropdownItemModal}
                   />
                   <DropdownItems
                     dropdownType={"item_Type"}
@@ -186,16 +225,16 @@ export const AddItemModal = ({
                     onOpenAddDropdownItemModal={onOpenAddDropdownItemModal}
                     onOpenEditDropdownItemModal={onOpenEditDropdownItemModal}
                   />
-                  <Input
-                    type="text"
-                    label="Requisition By"
-                    onChange={(e) => {
-                      setItemInData({
-                        ...itemInData,
-                        requisitionBy: e.target.value,
-                      });
-                    }}
-                    isRequired
+                  <DropdownItems
+                    dropdownType={"requisition_By"}
+                    itemData={itemInData}
+                    setItemData={setItemInData}
+                    items={requisiotionsBy}
+                    collectionName="requisitions-by"
+                    setCollectionName={setCollectionName}
+                    setSelectedDropdownItem={setSelectedDropdownItem}
+                    onOpenAddDropdownItemModal={onOpenAddDropdownItemModal}
+                    onOpenEditDropdownItemModal={onOpenEditDropdownItemModal}
                   />
                 </div>
                 <div className="flex gap-3">

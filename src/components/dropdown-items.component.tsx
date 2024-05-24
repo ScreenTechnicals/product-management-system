@@ -25,7 +25,7 @@ type DropdownItemsProps = {
   setSelectedDropdownItem: Dispatch<SetStateAction<LabelOptionType>>;
   onOpenAddDropdownItemModal: Dispatch<SetStateAction<void>>;
   onOpenEditDropdownItemModal: Dispatch<SetStateAction<void>>;
-  dropdownType: "party_Name" | "item_Type";
+  dropdownType: "party_Name" | "item_Type" | "item_Name" | "requisition_By";
 };
 
 export const DropdownItems = ({

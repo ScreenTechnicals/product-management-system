@@ -1,1 +1,5 @@
-export type DropdownType = "partyName" | "itemName";
+export type DropdownType =
+  | "partyName"
+  | "itemName"
+  | "itemType"
+  | "requisitionBy";
