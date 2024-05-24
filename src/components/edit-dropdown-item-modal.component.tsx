@@ -79,7 +79,7 @@ export const EditDropdownItemModal = ({
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Edit Party Name
+                Edit the item in {collectionName}
               </ModalHeader>
               <ModalBody>
                 <Input
