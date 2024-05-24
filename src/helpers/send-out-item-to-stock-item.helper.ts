@@ -17,7 +17,16 @@ export const sendOutItemToStockItem = async (item: ItemType) => {
       quantity: item.quantity + itemStockSnap?.data()?.quantity,
       totalPrice: item.totalPrice + itemStockSnap?.data()?.totalPrice,
     });
-    await deleteDoc(doc(db, "items-out", item.id));
+
+    if (itemOutSnap?.data()?.quantity > item.quantity) {
+      await updateDoc(itemOutRef, {
+        quantity: itemOutSnap.data()?.quantity - item.quantity,
+        totalPrice: itemOutSnap.data()?.totalPrice - item.totalPrice,
+      });
+    } else {
+      await deleteDoc(doc(db, "items-out", item.id));
+    }
+
     toast.success("Item Sent Back to Stock Successfully!");
     return true;
   } catch (error) {

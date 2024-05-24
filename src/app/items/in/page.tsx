@@ -38,17 +38,20 @@ const ItemsInPage = () => {
     onOpenChange: onOpenChangeAddDropdownItemModal,
     onClose: onCloseAddDropdownItemModal,
   } = useDisclosure();
+
   const {
     isOpen: isOpenEditDropdownItemModal,
     onOpen: onOpenEditDropdownItemModal,
     onOpenChange: onOpenChangeEditDropdownItemModal,
     onClose: onCloseEditDropdownItemModal,
   } = useDisclosure();
+
   const [selectedDropDownItem, setSelectedDropDownItem] =
     useState<LabelOptionType>({
       label: "",
       value: "",
     });
+
   const [collectionName, setCollectionName] = useState<CollectionNameType>();
 
   return (

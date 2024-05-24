@@ -1,17 +1,11 @@
 "use client";
 
-import { itemTypes } from "@/common/consts";
-import { partyNames } from "@/common/consts/party-names.const";
 import { ItemType } from "@/common/types";
 import { sendOutItemToStockItem, updateItemOut } from "@/helpers";
 import { fromDate, getLocalTimeZone } from "@internationalized/date";
 import {
   Button,
   DatePicker,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
   Input,
   Modal,
   ModalBody,
@@ -21,7 +15,6 @@ import {
   ModalProps,
 } from "@nextui-org/react";
 import { useEffect, useState } from "react";
-import { BiChevronDown } from "react-icons/bi";
 
 type EditItemOutModalProps = Pick<
   ModalProps,
@@ -36,7 +29,7 @@ export const EditItemOutModal = ({
   onOpenChange,
   selectedItem,
 }: EditItemOutModalProps) => {
-  const [itemStockData, setItemStockData] = useState<ItemType>({
+  const [itemOutData, setItemOutData] = useState<ItemType>({
     id: selectedItem.id,
     itemName: selectedItem.itemName,
     itemType: selectedItem.itemType,
@@ -55,13 +48,13 @@ export const EditItemOutModal = ({
   const [isSendingBack, setIsSendingBack] = useState(false);
 
   const isDissabled =
-    itemStockData.quantity > selectedItem.quantity ||
-    itemStockData.rate > selectedItem.rate ||
+    itemOutData.quantity > selectedItem.quantity ||
+    itemOutData.rate > selectedItem.rate ||
     isSubmiting ||
     isSendingBack;
 
   useEffect(() => {
-    setItemStockData({
+    setItemOutData({
       id: selectedItem.id,
       itemName: selectedItem.itemName,
       itemType: selectedItem.itemType,
@@ -93,66 +86,35 @@ export const EditItemOutModal = ({
                     label="Item Name"
                     className="w-full"
                     isReadOnly
-                    value={itemStockData.itemName}
+                    isDisabled
+                    value={itemOutData.itemName}
                     isRequired
                   />
-                  <Dropdown>
-                    <DropdownTrigger>
-                      <Button className="py-7 w-1/2">
-                        <span>
-                          {itemStockData.itemType.length === 0
-                            ? "Item Type"
-                            : itemStockData.itemType}
-                        </span>
-                        <BiChevronDown />
-                      </Button>
-                    </DropdownTrigger>
-                    <DropdownMenu
-                      variant="flat"
-                      aria-label="Dynamic Actions"
-                      items={itemTypes}
-                    >
-                      {(item) => {
-                        return (
-                          <DropdownItem isReadOnly key={item.label}>
-                            {item.value}
-                          </DropdownItem>
-                        );
-                      }}
-                    </DropdownMenu>
-                  </Dropdown>
+                  <Input
+                    type="text"
+                    label="Item Type"
+                    className="w-full"
+                    isReadOnly
+                    isDisabled
+                    value={itemOutData.itemType}
+                    isRequired
+                  />
                 </div>
                 <div className="flex gap-3">
-                  <Dropdown>
-                    <DropdownTrigger>
-                      <Button className="py-7 w-1/2">
-                        <span>
-                          {itemStockData.partyName.length === 0
-                            ? "Party Name"
-                            : itemStockData.partyName}
-                        </span>
-                        <BiChevronDown />
-                      </Button>
-                    </DropdownTrigger>
-                    <DropdownMenu
-                      variant="flat"
-                      aria-label="Dynamic Actions"
-                      items={partyNames}
-                    >
-                      {(item) => {
-                        return (
-                          <DropdownItem isReadOnly key={item.label}>
-                            {item.value}
-                          </DropdownItem>
-                        );
-                      }}
-                    </DropdownMenu>
-                  </Dropdown>
+                  <Input
+                    type="text"
+                    label="Party Name"
+                    isReadOnly
+                    isDisabled
+                    value={itemOutData.partyName}
+                    isRequired
+                  />
                   <Input
                     type="text"
                     label="Requisition By"
                     isReadOnly
-                    value={itemStockData.requisitionBy}
+                    isDisabled
+                    value={itemOutData.requisitionBy}
                     isRequired
                   />
                 </div>
@@ -160,16 +122,22 @@ export const EditItemOutModal = ({
                   <Input
                     type="number"
                     label={`Quantity(Max: ${selectedItem.quantity})`}
-                    max={itemStockData.quantity}
+                    max={itemOutData.quantity}
                     color={
-                      itemStockData.quantity > selectedItem.quantity
+                      itemOutData.quantity > selectedItem.quantity
                         ? "danger"
                         : "default"
                     }
-                    isInvalid={itemStockData.quantity > selectedItem.quantity}
+                    isInvalid={itemOutData.quantity > selectedItem.quantity}
                     errorMessage={`Max Quantity: ${selectedItem.quantity}`}
-                    isReadOnly
-                    value={itemStockData.quantity.toString()}
+                    value={itemOutData.quantity.toString()}
+                    onChange={(e) => {
+                      setItemOutData({
+                        ...itemOutData,
+                        quantity: Number(e.target.value),
+                        totalPrice: Number(e.target.value) * itemOutData.rate,
+                      });
+                    }}
                     isRequired
                   />
                   <Input
@@ -177,18 +145,18 @@ export const EditItemOutModal = ({
                     label="Rate"
                     startContent="₹"
                     isReadOnly
-                    value={itemStockData.rate.toString()}
+                    isDisabled
+                    value={itemOutData.rate.toString()}
                     isRequired
                   />
                 </div>
                 <DatePicker
                   label="Purchase Date"
+                  isDisabled
                   hideTimeZone
                   showMonthAndYearPickers
                   value={fromDate(
-                    new Date(
-                      (itemStockData?.purchaseDate?.seconds ?? 0) * 1000
-                    ),
+                    new Date((itemOutData?.purchaseDate?.seconds ?? 0) * 1000),
                     getLocalTimeZone()
                   )}
                   isReadOnly
@@ -196,13 +164,14 @@ export const EditItemOutModal = ({
                 />
                 <DatePicker
                   label="Issue Date"
+                  isDisabled
                   hideTimeZone
                   showMonthAndYearPickers
                   value={
-                    itemStockData?.issueDate?.seconds
+                    itemOutData?.issueDate?.seconds
                       ? fromDate(
                           new Date(
-                            (itemStockData?.issueDate?.seconds ?? 0) * 1000
+                            (itemOutData?.issueDate?.seconds ?? 0) * 1000
                           ),
                           getLocalTimeZone()
                         )
@@ -217,13 +186,9 @@ export const EditItemOutModal = ({
                   contentEditable={false}
                   startContent="₹"
                   color={
-                    itemStockData.rate > selectedItem.rate
-                      ? "danger"
-                      : "default"
+                    itemOutData.rate > selectedItem.rate ? "danger" : "default"
                   }
-                  value={(
-                    itemStockData.quantity * itemStockData.rate
-                  ).toString()}
+                  value={(itemOutData.quantity * itemOutData.rate).toString()}
                   isReadOnly
                   isRequired
                 />
@@ -231,12 +196,12 @@ export const EditItemOutModal = ({
                   type="text"
                   label="Remarks (Optional)"
                   onChange={(e) => {
-                    setItemStockData({
-                      ...itemStockData,
+                    setItemOutData({
+                      ...itemOutData,
                       remarks: e.target.value,
                     });
                   }}
-                  value={itemStockData.remarks}
+                  value={itemOutData.remarks}
                 />
               </ModalBody>
               <ModalFooter>
@@ -244,7 +209,7 @@ export const EditItemOutModal = ({
                   color="secondary"
                   onPress={() => {
                     setIsSendingBack(true);
-                    sendOutItemToStockItem(itemStockData).finally(() => {
+                    sendOutItemToStockItem(itemOutData).finally(() => {
                       setIsSendingBack(false);
                       onClose();
                     });
@@ -259,7 +224,7 @@ export const EditItemOutModal = ({
                   color="primary"
                   onPress={() => {
                     setIsSubmiting(true);
-                    updateItemOut(itemStockData).finally(() => {
+                    updateItemOut(itemOutData).finally(() => {
                       setIsSubmiting(false);
                       onClose();
                     });

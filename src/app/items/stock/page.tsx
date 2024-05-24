@@ -1,7 +1,9 @@
 "use client";
 
-import { ItemType } from "@/common/types";
+import { CollectionNameType, ItemType, LabelOptionType } from "@/common/types";
 import {
+  AddNewItemToDropDownModal,
+  EditDropdownItemModal,
   EditItemStockModal,
   IssueItemStockModal,
   ItemsStockTable,
@@ -46,6 +48,28 @@ const ItemsStockPage = () => {
     remarks: "",
   });
 
+  const {
+    isOpen: isOpenAddDropdownItemModal,
+    onOpen: onOpenAddDropdownItemModal,
+    onOpenChange: onOpenChangeAddDropdownItemModal,
+    onClose: onCloseAddDropdownItemModal,
+  } = useDisclosure();
+
+  const {
+    isOpen: isOpenEditDropdownItemModal,
+    onOpen: onOpenEditDropdownItemModal,
+    onOpenChange: onOpenChangeEditDropdownItemModal,
+    onClose: onCloseEditDropdownItemModal,
+  } = useDisclosure();
+
+  const [selectedDropDownItem, setSelectedDropDownItem] =
+    useState<LabelOptionType>({
+      label: "",
+      value: "",
+    });
+
+  const [collectionName, setCollectionName] = useState<CollectionNameType>();
+
   return (
     <div className="w-full md:px-10 p-5">
       <ItemsStockTable
@@ -59,6 +83,10 @@ const ItemsStockPage = () => {
         onClose={onCloseEdit}
         onOpenChange={onOpenChangeEdit}
         selectedItem={selectedItem}
+        onOpenAddDropdownItemModal={onOpenAddDropdownItemModal}
+        onOpenEditDropdownItemModal={onOpenEditDropdownItemModal}
+        setSelectedDropdownItem={setSelectedDropDownItem}
+        setCollectionName={setCollectionName}
       />
       <IssueItemStockModal
         isOpen={isOpenIssue}
@@ -73,6 +101,19 @@ const ItemsStockPage = () => {
         onCloseEdit={onCloseEdit}
         collection="items-stock"
         id={selectedItem.id}
+      />
+      <AddNewItemToDropDownModal
+        isOpen={isOpenAddDropdownItemModal}
+        onClose={onCloseAddDropdownItemModal}
+        onOpenChange={onOpenChangeAddDropdownItemModal}
+        collectionName={collectionName}
+      />
+      <EditDropdownItemModal
+        isOpen={isOpenEditDropdownItemModal}
+        onClose={onCloseEditDropdownItemModal}
+        onOpenChange={onOpenChangeEditDropdownItemModal}
+        dropdownItem={selectedDropDownItem}
+        collectionName={collectionName}
       />
     </div>
   );

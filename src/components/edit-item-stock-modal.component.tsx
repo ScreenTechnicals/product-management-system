@@ -1,17 +1,12 @@
 "use client";
 
-import { itemTypes } from "@/common/consts";
-import { partyNames } from "@/common/consts/party-names.const";
-import { ItemType } from "@/common/types";
+import { CollectionNameType, ItemType, LabelOptionType } from "@/common/types";
 import { convertDateToTimestamp, updateItemStock } from "@/helpers";
+import { useGetDropdownItems } from "@/hooks";
 import { fromDate, getLocalTimeZone } from "@internationalized/date";
 import {
   Button,
   DatePicker,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
   Input,
   Modal,
   ModalBody,
@@ -20,8 +15,8 @@ import {
   ModalHeader,
   ModalProps,
 } from "@nextui-org/react";
-import { useEffect, useState } from "react";
-import { BiChevronDown } from "react-icons/bi";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { DropdownItems } from "./dropdown-items.component";
 
 type EditItemStockModalProps = Pick<
   ModalProps,
@@ -29,6 +24,10 @@ type EditItemStockModalProps = Pick<
 > & {
   selectedItem: ItemType;
   onOpenDelete: () => void;
+  onOpenAddDropdownItemModal: Dispatch<SetStateAction<void>>;
+  onOpenEditDropdownItemModal: Dispatch<SetStateAction<void>>;
+  setSelectedDropdownItem: Dispatch<SetStateAction<LabelOptionType>>;
+  setCollectionName: Dispatch<SetStateAction<CollectionNameType>>;
 };
 
 export const EditItemStockModal = ({
@@ -37,6 +36,10 @@ export const EditItemStockModal = ({
   onOpenChange,
   onOpenDelete,
   selectedItem,
+  onOpenAddDropdownItemModal,
+  onOpenEditDropdownItemModal,
+  setSelectedDropdownItem,
+  setCollectionName,
 }: EditItemStockModalProps) => {
   const [itemStockData, setItemStockData] = useState<ItemType>({
     id: selectedItem.id,
@@ -70,6 +73,11 @@ export const EditItemStockModal = ({
     });
   }, [selectedItem]);
 
+  const { data: itemsName } = useGetDropdownItems("items-name");
+  const { data: itemsType } = useGetDropdownItems("items-type");
+  const { data: partyNames } = useGetDropdownItems("party-names");
+  const { data: requisiotionsBy } = useGetDropdownItems("requisitions-by");
+
   return (
     <>
       <Modal isOpen={isOpen} backdrop="blur" onOpenChange={onOpenChange}>
@@ -81,99 +89,51 @@ export const EditItemStockModal = ({
               </ModalHeader>
               <ModalBody>
                 <div className="flex items-center gap-3">
-                  <Input
-                    type="text"
-                    label="Item Name"
-                    className="w-full"
-                    onChange={(e) => {
-                      setItemStockData({
-                        ...itemStockData,
-                        itemName: e.target.value,
-                      });
-                    }}
-                    value={itemStockData.itemName}
-                    isRequired
+                  <DropdownItems
+                    dropdownType={"item_Name"}
+                    itemData={itemStockData}
+                    setItemData={setItemStockData}
+                    items={itemsName}
+                    collectionName="items-name"
+                    setCollectionName={setCollectionName}
+                    setSelectedDropdownItem={setSelectedDropdownItem}
+                    onOpenAddDropdownItemModal={onOpenAddDropdownItemModal}
+                    onOpenEditDropdownItemModal={onOpenEditDropdownItemModal}
                   />
-                  <Dropdown>
-                    <DropdownTrigger>
-                      <Button className="py-7 w-1/2">
-                        <span>
-                          {itemStockData.itemType.length === 0
-                            ? "Item Type"
-                            : itemStockData.itemType}
-                        </span>
-                        <BiChevronDown />
-                      </Button>
-                    </DropdownTrigger>
-                    <DropdownMenu
-                      variant="flat"
-                      aria-label="Dynamic Actions"
-                      items={itemTypes}
-                    >
-                      {(item) => {
-                        return (
-                          <DropdownItem
-                            onClick={() => {
-                              setItemStockData({
-                                ...itemStockData,
-                                itemType: item.value,
-                              });
-                            }}
-                            key={item.label}
-                          >
-                            {item.value}
-                          </DropdownItem>
-                        );
-                      }}
-                    </DropdownMenu>
-                  </Dropdown>
+                  <DropdownItems
+                    dropdownType={"item_Type"}
+                    itemData={itemStockData}
+                    setItemData={setItemStockData}
+                    items={itemsType}
+                    collectionName="items-type"
+                    setCollectionName={setCollectionName}
+                    setSelectedDropdownItem={setSelectedDropdownItem}
+                    onOpenAddDropdownItemModal={onOpenAddDropdownItemModal}
+                    onOpenEditDropdownItemModal={onOpenEditDropdownItemModal}
+                  />
                 </div>
-
                 <div className="flex gap-3">
-                  <Dropdown>
-                    <DropdownTrigger>
-                      <Button className="py-7 w-1/2">
-                        <span>
-                          {itemStockData.partyName.length === 0
-                            ? "Party Name"
-                            : itemStockData.partyName}
-                        </span>
-                        <BiChevronDown />
-                      </Button>
-                    </DropdownTrigger>
-                    <DropdownMenu
-                      variant="flat"
-                      aria-label="Dynamic Actions"
-                      items={partyNames}
-                    >
-                      {(item) => {
-                        return (
-                          <DropdownItem
-                            onClick={() => {
-                              setItemStockData({
-                                ...itemStockData,
-                                partyName: item.value,
-                              });
-                            }}
-                            key={item.label}
-                          >
-                            {item.value}
-                          </DropdownItem>
-                        );
-                      }}
-                    </DropdownMenu>
-                  </Dropdown>
-                  <Input
-                    type="text"
-                    label="Requisition By"
-                    onChange={(e) => {
-                      setItemStockData({
-                        ...itemStockData,
-                        requisitionBy: e.target.value,
-                      });
-                    }}
-                    value={itemStockData.requisitionBy}
-                    isRequired
+                  <DropdownItems
+                    dropdownType={"party_Name"}
+                    itemData={itemStockData}
+                    setItemData={setItemStockData}
+                    items={partyNames}
+                    collectionName="party-names"
+                    setCollectionName={setCollectionName}
+                    setSelectedDropdownItem={setSelectedDropdownItem}
+                    onOpenAddDropdownItemModal={onOpenAddDropdownItemModal}
+                    onOpenEditDropdownItemModal={onOpenEditDropdownItemModal}
+                  />
+                  <DropdownItems
+                    dropdownType={"requisition_By"}
+                    itemData={itemStockData}
+                    setItemData={setItemStockData}
+                    items={requisiotionsBy}
+                    collectionName="requisitions-by"
+                    setCollectionName={setCollectionName}
+                    setSelectedDropdownItem={setSelectedDropdownItem}
+                    onOpenAddDropdownItemModal={onOpenAddDropdownItemModal}
+                    onOpenEditDropdownItemModal={onOpenEditDropdownItemModal}
                   />
                 </div>
                 <div className="flex gap-3">

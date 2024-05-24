@@ -1,17 +1,11 @@
 "use client";
 
-import { itemTypes } from "@/common/consts";
-import { partyNames } from "@/common/consts/party-names.const";
 import { ItemType } from "@/common/types";
 import { convertDateToTimestamp, issueItemStock } from "@/helpers";
 import { fromDate, getLocalTimeZone } from "@internationalized/date";
 import {
   Button,
   DatePicker,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
   Input,
   Modal,
   ModalBody,
@@ -21,7 +15,6 @@ import {
   ModalProps,
 } from "@nextui-org/react";
 import { useEffect, useState } from "react";
-import { BiChevronDown } from "react-icons/bi";
 
 type EditItemStockModalProps = Pick<
   ModalProps,
@@ -90,66 +83,34 @@ export const IssueItemStockModal = ({
                     label="Item Name"
                     className="w-full"
                     isReadOnly
+                    isDisabled
                     value={itemStockData.itemName}
                     isRequired
                   />
-                  <Dropdown>
-                    <DropdownTrigger>
-                      <Button className="py-7 w-1/2">
-                        <span>
-                          {itemStockData.itemType.length === 0
-                            ? "Item Type"
-                            : itemStockData.itemType}
-                        </span>
-                        <BiChevronDown />
-                      </Button>
-                    </DropdownTrigger>
-                    <DropdownMenu
-                      variant="flat"
-                      aria-label="Dynamic Actions"
-                      items={itemTypes}
-                    >
-                      {(item) => {
-                        return (
-                          <DropdownItem isReadOnly key={item.label}>
-                            {item.value}
-                          </DropdownItem>
-                        );
-                      }}
-                    </DropdownMenu>
-                  </Dropdown>
+                  <Input
+                    type="text"
+                    label="Item Type"
+                    className="w-full"
+                    isReadOnly
+                    isDisabled
+                    value={itemStockData.itemType}
+                    isRequired
+                  />
                 </div>
-
                 <div className="flex gap-3">
-                  <Dropdown>
-                    <DropdownTrigger>
-                      <Button className="py-7 w-1/2">
-                        <span>
-                          {itemStockData.partyName.length === 0
-                            ? "Party Name"
-                            : itemStockData.partyName}
-                        </span>
-                        <BiChevronDown />
-                      </Button>
-                    </DropdownTrigger>
-                    <DropdownMenu
-                      variant="flat"
-                      aria-label="Dynamic Actions"
-                      items={partyNames}
-                    >
-                      {(item) => {
-                        return (
-                          <DropdownItem isReadOnly key={item.label}>
-                            {item.value}
-                          </DropdownItem>
-                        );
-                      }}
-                    </DropdownMenu>
-                  </Dropdown>
+                  <Input
+                    type="text"
+                    label="Party Name"
+                    isReadOnly
+                    isDisabled
+                    value={itemStockData.partyName}
+                    isRequired
+                  />
                   <Input
                     type="text"
                     label="Requisition By"
                     isReadOnly
+                    isDisabled
                     value={itemStockData.requisitionBy}
                     isRequired
                   />
@@ -180,6 +141,7 @@ export const IssueItemStockModal = ({
                     type="number"
                     label="Rate"
                     startContent="₹"
+                    isDisabled
                     color={
                       itemStockData.rate > selectedItem.rate
                         ? "danger"
@@ -192,6 +154,7 @@ export const IssueItemStockModal = ({
                 </div>
                 <DatePicker
                   label="Purchase Date"
+                  isDisabled
                   hideTimeZone
                   showMonthAndYearPickers
                   value={fromDate(
