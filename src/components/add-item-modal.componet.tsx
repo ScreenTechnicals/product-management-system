@@ -1,8 +1,8 @@
 "use client";
 
 import { CollectionNameType, ItemType, LabelOptionType } from "@/common/types";
-import { db } from "@/configs";
 import { AddItemIn, convertDateToTimestamp } from "@/helpers";
+import { useGetDropdownItems } from "@/hooks";
 import {
   Button,
   DatePicker,
@@ -14,9 +14,7 @@ import {
   ModalHeader,
   ModalProps,
 } from "@nextui-org/react";
-import { collection, orderBy, query } from "firebase/firestore";
-import { Dispatch, SetStateAction, useMemo, useState } from "react";
-import { useCollectionData } from "react-firebase-hooks/firestore";
+import { Dispatch, SetStateAction, useState } from "react";
 import toast from "react-hot-toast";
 import { DropdownItems } from "./dropdown-items.component";
 
@@ -52,85 +50,10 @@ export const AddItemModal = ({
     remarks: "",
   });
 
-  const itemsNameRef = collection(db, "items-name");
-  const queryItemsName = query(itemsNameRef, orderBy("value"));
-  const [itemsNameSnapshots, isLoadingItemsNameSpanshots] =
-    useCollectionData(queryItemsName);
-
-  const itemsTypeRef = collection(db, "items-type");
-  const queryItemsType = query(itemsTypeRef, orderBy("value"));
-  const [itemsTypeSnapshots, isLoadingItemsTypeSpanshots] =
-    useCollectionData(queryItemsType);
-
-  const partyNamesRef = collection(db, "party-names");
-  const queryPartyNames = query(partyNamesRef, orderBy("value"));
-  const [partyNameSnapshots, isLoadingPartyNameSpanshots] =
-    useCollectionData(queryPartyNames);
-
-  const requisitionByRef = collection(db, "requisitions-by");
-  const queryRequisitionBy = query(requisitionByRef, orderBy("value"));
-  const [requisitionBySnapshots, isLoadingRequisitionBy] =
-    useCollectionData(queryRequisitionBy);
-
-  const itemsName = useMemo(() => {
-    let localItemNames: LabelOptionType[] = [
-      {
-        label: "add_new",
-        value: "Add New",
-      },
-    ];
-    if (!isLoadingItemsNameSpanshots) {
-      itemsNameSnapshots?.forEach((item) => {
-        localItemNames.push(item as LabelOptionType);
-      });
-    }
-    return localItemNames;
-  }, [isLoadingItemsNameSpanshots, itemsNameSnapshots]);
-
-  const itemsType = useMemo(() => {
-    let localItemTypes: LabelOptionType[] = [
-      {
-        label: "add_new",
-        value: "Add New",
-      },
-    ];
-    if (!isLoadingItemsTypeSpanshots) {
-      itemsTypeSnapshots?.forEach((item) => {
-        localItemTypes.push(item as LabelOptionType);
-      });
-    }
-    return localItemTypes;
-  }, [isLoadingItemsTypeSpanshots, itemsTypeSnapshots]);
-
-  const partyNames = useMemo(() => {
-    let localPartyNames: LabelOptionType[] = [
-      {
-        label: "add_new",
-        value: "Add New",
-      },
-    ];
-    if (!isLoadingPartyNameSpanshots) {
-      partyNameSnapshots?.forEach((item) => {
-        localPartyNames.push(item as LabelOptionType);
-      });
-    }
-    return localPartyNames;
-  }, [isLoadingPartyNameSpanshots, partyNameSnapshots]);
-
-  const requisiotionsBy = useMemo(() => {
-    let localRequisiotionsBy: LabelOptionType[] = [
-      {
-        label: "add_new",
-        value: "Add New",
-      },
-    ];
-    if (!isLoadingRequisitionBy) {
-      requisitionBySnapshots?.forEach((item) => {
-        localRequisiotionsBy.push(item as LabelOptionType);
-      });
-    }
-    return localRequisiotionsBy;
-  }, [isLoadingRequisitionBy, requisitionBySnapshots]);
+  const { data: itemsName } = useGetDropdownItems("items-name");
+  const { data: itemsType } = useGetDropdownItems("items-type");
+  const { data: partyNames } = useGetDropdownItems("party-names");
+  const { data: requisiotionsBy } = useGetDropdownItems("requisitions-by");
 
   const [isSubmiting, setIsSubmiting] = useState(false);
 
