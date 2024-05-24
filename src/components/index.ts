@@ -2,6 +2,7 @@ export * from "./add-item-modal.componet";
 export * from "./add-new-dropdown-item-modal.component";
 export * from "./delete-item-modal.component";
 export * from "./download-items-modal.component";
+export * from "./dropdown-items.component";
 export * from "./edit-dropdown-item-modal.component";
 export * from "./edit-item-in-modal.component";
 export * from "./edit-item-out-modal.component";

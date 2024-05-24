@@ -6,10 +6,6 @@ import { AddItemIn, convertDateToTimestamp } from "@/helpers";
 import {
   Button,
   DatePicker,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
   Input,
   Modal,
   ModalBody,
@@ -22,9 +18,7 @@ import { collection, orderBy, query } from "firebase/firestore";
 import { Dispatch, SetStateAction, useMemo, useState } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import toast from "react-hot-toast";
-import { BiChevronDown } from "react-icons/bi";
-import { MdEdit } from "react-icons/md";
-import { twMerge } from "tailwind-merge";
+import { DropdownItems } from "./dropdown-items.component";
 
 type AddItemModalProps = Pick<
   ModalProps,
@@ -168,127 +162,30 @@ export const AddItemModal = ({
                     }}
                     isRequired
                   />
-                  <Dropdown>
-                    <DropdownTrigger>
-                      <Button className="py-7 w-1/2">
-                        <span>
-                          {itemInData.itemType.length === 0
-                            ? "Item Type"
-                            : itemInData.itemType}
-                        </span>
-                        <BiChevronDown />
-                      </Button>
-                    </DropdownTrigger>
-                    <DropdownMenu
-                      variant="flat"
-                      aria-label="Dynamic Actions"
-                      items={itemsType}
-                    >
-                      {(item) => {
-                        return (
-                          <DropdownItem
-                            onClick={() => {
-                              if (item.label === "add_new") {
-                                setCollectionName("items-type");
-                                onOpenAddDropdownItemModal();
-                                return;
-                              }
-                              setItemInData({
-                                ...itemInData,
-                                partyName: item.value,
-                              });
-                            }}
-                            key={item.label}
-                            className={twMerge(
-                              item.label === "add_new" &&
-                                "bg-success-500 text-white"
-                            )}
-                            endContent={
-                              item.label !== "add_new" && (
-                                <Button
-                                  isIconOnly
-                                  radius="full"
-                                  variant="flat"
-                                  size="sm"
-                                  color="secondary"
-                                  onPress={() => {
-                                    setSelectedDropdownItem(item);
-                                    onOpenEditDropdownItemModal();
-                                  }}
-                                >
-                                  <MdEdit />
-                                </Button>
-                              )
-                            }
-                          >
-                            {item.value}
-                          </DropdownItem>
-                        );
-                      }}
-                    </DropdownMenu>
-                  </Dropdown>
+                  <DropdownItems
+                    dropdownType={"item_Type"}
+                    itemData={itemInData}
+                    setItemData={setItemInData}
+                    items={itemsType}
+                    collectionName="items-type"
+                    setCollectionName={setCollectionName}
+                    setSelectedDropdownItem={setSelectedDropdownItem}
+                    onOpenAddDropdownItemModal={onOpenAddDropdownItemModal}
+                    onOpenEditDropdownItemModal={onOpenEditDropdownItemModal}
+                  />
                 </div>
-
                 <div className="flex gap-3">
-                  <Dropdown>
-                    <DropdownTrigger>
-                      <Button className="py-7 w-1/2">
-                        <span>
-                          {itemInData.partyName.length === 0
-                            ? "Party Name"
-                            : itemInData.partyName}
-                        </span>
-                        <BiChevronDown />
-                      </Button>
-                    </DropdownTrigger>
-                    <DropdownMenu
-                      variant="flat"
-                      aria-label="Dynamic Actions"
-                      items={partyNames}
-                    >
-                      {(item) => {
-                        return (
-                          <DropdownItem
-                            onClick={() => {
-                              if (item.label === "add_new") {
-                                setCollectionName("party-names");
-                                onOpenAddDropdownItemModal();
-                                return;
-                              }
-                              setItemInData({
-                                ...itemInData,
-                                partyName: item.value,
-                              });
-                            }}
-                            key={item.label}
-                            className={twMerge(
-                              item.label === "add_new" &&
-                                "bg-success-500 text-white"
-                            )}
-                            endContent={
-                              item.label !== "add_new" && (
-                                <Button
-                                  isIconOnly
-                                  radius="full"
-                                  variant="flat"
-                                  size="sm"
-                                  color="secondary"
-                                  onPress={() => {
-                                    setSelectedDropdownItem(item);
-                                    onOpenEditDropdownItemModal();
-                                  }}
-                                >
-                                  <MdEdit />
-                                </Button>
-                              )
-                            }
-                          >
-                            {item.value}
-                          </DropdownItem>
-                        );
-                      }}
-                    </DropdownMenu>
-                  </Dropdown>
+                  <DropdownItems
+                    dropdownType={"party_Name"}
+                    itemData={itemInData}
+                    setItemData={setItemInData}
+                    items={partyNames}
+                    collectionName="party-names"
+                    setCollectionName={setCollectionName}
+                    setSelectedDropdownItem={setSelectedDropdownItem}
+                    onOpenAddDropdownItemModal={onOpenAddDropdownItemModal}
+                    onOpenEditDropdownItemModal={onOpenEditDropdownItemModal}
+                  />
                   <Input
                     type="text"
                     label="Requisition By"
