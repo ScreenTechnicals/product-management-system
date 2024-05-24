@@ -3,7 +3,7 @@ import { db } from "@/configs";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import toast from "react-hot-toast";
 
-export const issueItemStock = async (item: ItemType) => {
+export const issueItemStock = async (item: ItemType, uid: string) => {
   try {
     if (!item.issueDate) {
       toast.error("Please Select Issue Date!");
@@ -32,6 +32,7 @@ export const issueItemStock = async (item: ItemType) => {
         ...item,
         purchaseDate: itemStockSnap?.data()?.purchaseDate,
         issueDate: new Date((item?.issueDate?.seconds ?? 0) * 1000),
+        uid: uid,
       },
       { merge: true }
     );
@@ -41,6 +42,7 @@ export const issueItemStock = async (item: ItemType) => {
       quantity: itemStockSnap?.data()?.quantity - item.quantity,
       rate: item.rate,
       totalPrice: (itemStockSnap?.data()?.quantity - item.quantity) * item.rate,
+      uid: uid,
     });
 
     toast.success("Item Issued Successfully!");

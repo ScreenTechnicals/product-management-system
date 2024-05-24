@@ -3,7 +3,7 @@ import { db } from "@/configs";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import toast from "react-hot-toast";
 
-export const updateItemStock = async (item: ItemType) => {
+export const updateItemStock = async (item: ItemType, uid: string) => {
   try {
     const itemInRef = doc(db, "items-in", item.id);
     const itemStockRef = doc(db, "items-stock", item.id);
@@ -28,6 +28,7 @@ export const updateItemStock = async (item: ItemType) => {
       rate: item.rate,
       totalPrice: item.totalPrice,
       remarks: item.remarks,
+      uid: uid,
     });
 
     toast.success("Stocks Updated Successfully!");
@@ -46,6 +47,7 @@ export const updateItemStock = async (item: ItemType) => {
         rate: item.rate,
         totalPrice: item.totalPrice,
         remarks: item.remarks,
+        uid: uid,
       });
       toast.success("Items-In Updated Successfully!");
     } else {
@@ -56,6 +58,7 @@ export const updateItemStock = async (item: ItemType) => {
         requisitionBy: item.requisitionBy,
         purchaseDate: new Date((item?.purchaseDate?.seconds ?? 0) * 1000),
         remarks: item.remarks,
+        uid: uid,
       });
       toast.success("Items-In Updated Successfully!");
       toast.error("Please Update The Quantity and Rate Manually In Items-In!", {

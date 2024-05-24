@@ -3,11 +3,12 @@ import { db } from "@/configs";
 import { doc, updateDoc } from "firebase/firestore";
 import toast from "react-hot-toast";
 
-export const updateItemOut = async (item: ItemType) => {
+export const updateItemOut = async (item: ItemType, uid: string) => {
   try {
     const itemOutRef = doc(db, "items-out", item.id);
     await updateDoc(itemOutRef, {
       remarks: item.remarks,
+      uid: uid,
     });
     toast.success("Remarks Updated Successfully!");
     return true;

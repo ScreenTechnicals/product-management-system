@@ -1,6 +1,7 @@
 "use client";
 
 import { CollectionNameType, ItemType, LabelOptionType } from "@/common/types";
+import { auth } from "@/configs";
 import { AddItemIn, convertDateToTimestamp } from "@/helpers";
 import { useGetDropdownItems } from "@/hooks";
 import {
@@ -15,6 +16,7 @@ import {
   ModalProps,
 } from "@nextui-org/react";
 import { Dispatch, SetStateAction, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import toast from "react-hot-toast";
 import { DropdownItems } from "./dropdown-items.component";
 
@@ -37,6 +39,8 @@ export const AddItemModal = ({
   setSelectedDropdownItem,
   setCollectionName,
 }: AddItemModalProps) => {
+  const [user] = useAuthState(auth);
+
   const [itemInData, setItemInData] = useState<ItemType>({
     id: Date.now().toString(),
     itemName: "",
@@ -68,20 +72,22 @@ export const AddItemModal = ({
     itemInData.totalPrice === 0;
 
   const handleAddItem = () => {
+    if (!user) return;
+
     if (isDisabledSubmit) {
       toast.error("Please fill all the required fields.");
       return;
     }
     setIsSubmiting(true);
-    AddItemIn(itemInData)
+    AddItemIn(itemInData, user.uid)
       .then((res) => {
         if (res) {
-          setIsSubmiting(false);
           toast.success("Item Added Successfully");
+        } else {
+          toast.error("Something Went Wrong! Please try again.");
         }
       })
       .catch((error) => {
-        setIsSubmiting(false);
         toast.error("Something Went Wrong! Please try again.");
       })
       .finally(() => {

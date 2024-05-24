@@ -71,7 +71,7 @@ export const AddNewItemToDropDownModal = ({
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Add New Party Name
+                Add new Item to the {collectionName}
               </ModalHeader>
               <ModalBody>
                 <Input

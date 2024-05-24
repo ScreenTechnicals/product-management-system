@@ -1,6 +1,7 @@
 "use client";
 
 import { CollectionNameType, ItemType, LabelOptionType } from "@/common/types";
+import { auth } from "@/configs";
 import { convertDateToTimestamp, updateItemIn } from "@/helpers";
 import { useGetDropdownItems } from "@/hooks";
 import { fromDate, getLocalTimeZone } from "@internationalized/date";
@@ -16,6 +17,7 @@ import {
   ModalProps,
 } from "@nextui-org/react";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { DropdownItems } from "./dropdown-items.component";
 
 type EditItemInModalProps = Pick<
@@ -41,6 +43,8 @@ export const EditItemInModal = ({
   setSelectedDropdownItem,
   setCollectionName,
 }: EditItemInModalProps) => {
+  const [user] = useAuthState(auth);
+
   const [itemInData, setItemInData] = useState<ItemType>({
     id: selectedItem.id,
     itemName: selectedItem.itemName,
@@ -215,8 +219,9 @@ export const EditItemInModal = ({
                 <Button
                   color="primary"
                   onPress={() => {
+                    if (!user) return;
                     setIsSubmiting(true);
-                    updateItemIn(itemInData).finally(() => {
+                    updateItemIn(itemInData, user.uid).finally(() => {
                       setIsSubmiting(false);
                       onClose();
                     });

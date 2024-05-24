@@ -1,6 +1,7 @@
 "use client";
 
 import { ItemType } from "@/common/types";
+import { auth } from "@/configs";
 import { convertDateToTimestamp, issueItemStock } from "@/helpers";
 import { fromDate, getLocalTimeZone } from "@internationalized/date";
 import {
@@ -15,6 +16,7 @@ import {
   ModalProps,
 } from "@nextui-org/react";
 import { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 type EditItemStockModalProps = Pick<
   ModalProps,
@@ -29,6 +31,8 @@ export const IssueItemStockModal = ({
   onOpenChange,
   selectedItem,
 }: EditItemStockModalProps) => {
+  const [user] = useAuthState(auth);
+
   const [itemStockData, setItemStockData] = useState<ItemType>({
     id: Date.now().toString(),
     itemName: selectedItem.itemName,
@@ -225,8 +229,9 @@ export const IssueItemStockModal = ({
                 <Button
                   color="secondary"
                   onPress={() => {
+                    if (!user) return;
                     setIsSubmiting(true);
-                    issueItemStock(itemStockData).finally(() => {
+                    issueItemStock(itemStockData, user.uid).finally(() => {
                       setIsSubmiting(false);
                       onClose();
                     });

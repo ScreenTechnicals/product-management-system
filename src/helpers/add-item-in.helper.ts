@@ -2,12 +2,13 @@ import { ItemType } from "@/common/types";
 import { db } from "@/configs";
 import { doc, setDoc } from "firebase/firestore";
 
-export const AddItemIn = async (item: ItemType) => {
+export const AddItemIn = async (item: ItemType, uid: string) => {
   try {
     await setDoc(
       doc(db, "items-in", item.id),
       {
         ...item,
+        uid: uid,
       },
       { merge: true }
     );
@@ -16,6 +17,7 @@ export const AddItemIn = async (item: ItemType) => {
       {
         ...item,
         issueDate: "",
+        uid: uid,
       },
       { merge: true }
     );

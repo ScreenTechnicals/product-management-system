@@ -1,6 +1,7 @@
 "use client";
 
 import { ItemType } from "@/common/types";
+import { auth } from "@/configs";
 import { sendOutItemToStockItem, updateItemOut } from "@/helpers";
 import { fromDate, getLocalTimeZone } from "@internationalized/date";
 import {
@@ -15,6 +16,7 @@ import {
   ModalProps,
 } from "@nextui-org/react";
 import { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 type EditItemOutModalProps = Pick<
   ModalProps,
@@ -29,6 +31,8 @@ export const EditItemOutModal = ({
   onOpenChange,
   selectedItem,
 }: EditItemOutModalProps) => {
+  const [user] = useAuthState(auth);
+
   const [itemOutData, setItemOutData] = useState<ItemType>({
     id: selectedItem.id,
     itemName: selectedItem.itemName,
@@ -208,11 +212,14 @@ export const EditItemOutModal = ({
                 <Button
                   color="secondary"
                   onPress={() => {
+                    if (!user) return;
                     setIsSendingBack(true);
-                    sendOutItemToStockItem(itemOutData).finally(() => {
-                      setIsSendingBack(false);
-                      onClose();
-                    });
+                    sendOutItemToStockItem(itemOutData, user.uid).finally(
+                      () => {
+                        setIsSendingBack(false);
+                        onClose();
+                      }
+                    );
                   }}
                   className="w-full"
                   isDisabled={isDissabled}
@@ -223,8 +230,9 @@ export const EditItemOutModal = ({
                 <Button
                   color="primary"
                   onPress={() => {
+                    if (!user) return;
                     setIsSubmiting(true);
-                    updateItemOut(itemOutData).finally(() => {
+                    updateItemOut(itemOutData, user.uid).finally(() => {
                       setIsSubmiting(false);
                       onClose();
                     });
