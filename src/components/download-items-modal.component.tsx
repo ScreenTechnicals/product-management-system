@@ -103,7 +103,6 @@ export const DownloadItemsModal = ({
                       <DropdownTrigger>
                         <Button
                           variant="flat"
-                          color="primary"
                           endContent={<BiChevronDown size={20} />}
                           className="py-7 w-1/2"
                         >
@@ -156,7 +155,6 @@ export const DownloadItemsModal = ({
                       <DropdownTrigger>
                         <Button
                           variant="flat"
-                          color="primary"
                           endContent={<BiChevronDown size={20} />}
                           className="py-7 w-1/2"
                         >
@@ -210,8 +208,7 @@ export const DownloadItemsModal = ({
                     label="From"
                     hideTimeZone
                     fullWidth
-                    showMonthAndYearPickers
-                    color="primary"
+                    // showMonthAndYearPickers
                     onChange={(e) => {
                       setDownloadExcelParams((value) => {
                         return {
@@ -228,8 +225,7 @@ export const DownloadItemsModal = ({
                     label="To"
                     hideTimeZone
                     fullWidth
-                    color="primary"
-                    showMonthAndYearPickers
+                    // showMonthAndYearPickers
                     isInvalid={isToDateInvalid}
                     errorMessage={
                       isToDateInvalid &&
