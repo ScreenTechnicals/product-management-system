@@ -1,0 +1,10 @@
+# model: "gpt-4o-mini"
+language: "English (Unisted States)"
+# early-access: false
+review:
+  enabled: true
+  tone: "informal"
+  allow:
+    pull-requests:
+      never: ["meness"]
+      contributors-only: true
