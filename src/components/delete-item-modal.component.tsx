@@ -18,12 +18,7 @@ type DeleteItemModalProps = Pick<
 > & {
   id: string;
   collection: string;
-  onCloseEdit: () => void;
-};
-
-export const DeleteItemModal = ({
-  isOpen,
-  onClose,
+  onCloseEdit: () =
   onCloseEdit,
   onOpenChange,
   id,
@@ -43,12 +38,7 @@ export const DeleteItemModal = ({
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                ⚠️ Warning
-              </ModalHeader>
-              <ModalBody>
-                <h1 className="p-0 m-0">
-                  Are you sure you want to delete this item?
-                </h1>
+                ⚠️ Wa
                 <h2>
                   All other occurence of this in item are not going to be
                   deleted!
@@ -68,15 +58,7 @@ export const DeleteItemModal = ({
                   color="danger"
                   onPress={() => {
                     setIsSubmiting(true);
-                    deleteItem(id, collection).finally(() => {
-                      setIsSubmiting(false);
-                      onClose();
-                      onCloseEdit();
-                    });
-                  }}
-                  className="w-full"
-                  isLoading={isSubmiting}
-                >
+              
                   Delete
                 </Button>
               </ModalFooter>
