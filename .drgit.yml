@@ -6,5 +6,4 @@ review:
   tone: "informal"
   allow:
     pull-requests:
-      never: ["meness"]
-      contributors-only: true
+      authors-only: true
