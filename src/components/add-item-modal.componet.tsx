@@ -22,13 +22,13 @@ import { DropdownItems } from "./dropdown-items.component";
 
 type AddItemModalProps = Pick<
   ModalProps,
-  "isOpen" | "onClose" | "onOpenChange"
-> & {
-  onOpenAddDropdownItemModal: Dispatch<SetStateAction<void>>;
-  onOpenEditDropdownItemModal: Dispatch<SetStateAction<void>>;
-  setSelectedDropdownItem: Dispatch<SetStateAction<LabelOptionType>>;
-  setCollectionName: Dispatch<SetStateAction<CollectionNameType>>;
-};
+//   "isOpen" | "onClose" | "onOpenChange"
+// > & {
+//   onOpenAddDropdownItemModal: Dispatch<SetStateAction<void>>;
+//   onOpenEditDropdownItemModal: Dispatch<SetStateAction<void>>;
+//   setSelectedDropdownItem: Dispatch<SetStateAction<LabelOptionType>>;
+//   setCollectionName: Dispatch<SetStateAction<CollectionNameType>>;
+// };
 
 export const AddItemModal = ({
   isOpen,
@@ -41,18 +41,18 @@ export const AddItemModal = ({
 }: AddItemModalProps) => {
   const [user] = useAuthState(auth);
 
-  const [itemInData, setItemInData] = useState<ItemType>({
-    id: Date.now().toString(),
-    itemName: "",
-    itemType: "",
-    partyName: "",
-    requisitionBy: "",
-    quantity: 0,
-    rate: 0,
-    purchaseDate: undefined,
-    totalPrice: 0,
-    remarks: "",
-  });
+  // const [itemInData, setItemInData] = useState<ItemType>({
+  //   id: Date.now().toString(),
+  //   itemName: "",
+  //   itemType: "",
+  //   partyName: "",
+  //   requisitionBy: "",
+  //   quantity: 0,
+  //   rate: 0,
+  //   purchaseDate: undefined,
+  //   totalPrice: 0,
+  //   remarks: "",
+  // });
 
   const { data: itemsName } = useGetDropdownItems("items-name");
   const { data: itemsType } = useGetDropdownItems("items-type");
