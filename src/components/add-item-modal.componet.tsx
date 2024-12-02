@@ -74,7 +74,19 @@ type AddItemModalProps = Pick<
   //   totalPrice: 0,
   //   remarks: "",
   // });
-
+// Uncomment the state initialization for itemInData
+const [itemInData, setItemInData] = useState<ItemType>(() => ({
+  id: Date.now().toString(),
+  itemName: "",
+  itemType: "",
+  partyName: "",
+  requisitionBy: "",
+  quantity: 0,
+  rate: 0,
+  purchaseDate: undefined,
+  totalPrice: 0,
+  remarks: "",
+}));
   const { data: itemsName } = useGetDropdownItems("items-name");
   const { data: itemsType } = useGetDropdownItems("items-type");
   const { data: partyNames } = useGetDropdownItems("party-names");
