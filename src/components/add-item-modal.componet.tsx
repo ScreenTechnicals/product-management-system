@@ -29,7 +29,13 @@ type AddItemModalProps = Pick<
 //   setSelectedDropdownItem: Dispatch<SetStateAction<LabelOptionType>>;
 //   setCollectionName: Dispatch<SetStateAction<CollectionNameType>>;
 // };
-
+-   "isOpen" | "onClose" | "onOpenChange"
+- > & {
+-   onOpenAddDropdownItemModal: Dispatch<SetStateAction<void>>;
+-   onOpenEditDropdownItemModal: Dispatch<SetStateAction<void>>;
+-   setSelectedDropdownItem: Dispatch<SetStateAction<LabelOptionType>>;
+-   setCollectionName: Dispatch<SetStateAction<CollectionNameType>>;
+- };
 export const AddItemModal = ({
   isOpen,
   onClose,
