@@ -52,7 +52,8 @@ type AddItemModalProps = Pick<
 
 // If the commented-out code is not needed, consider removing it
 // const [itemInData, setItemInData] = useState<ItemType>({...});
-  isOpen,
+// Remove the commented-out code if it's not needed
+// const [itemInData, setItemInData] = useState<ItemType>({...});
   onClose,
   onOpenChange,
   onOpenAddDropdownItemModal,
