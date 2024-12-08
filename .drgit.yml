@@ -8,4 +8,4 @@ review:
   path-based-instructions:
     - path: "**/*.js"
       instructions: >
-        Review the JavaScript code against the Google JavaScript style guide and point out any mismatches.
+        Review the JavaScript code against the AirBnb JavaScript style guide and point out any mismatches.
