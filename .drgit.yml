@@ -6,6 +6,6 @@ review:
     pull-requests:
       authors-only: true
   path-based-instructions:
-    - path: "**/*.js"
+    - path: "**/*.tsx"
       instructions: >
-        Review the JavaScript code against the AirBnb JavaScript style guide and point out any mismatches.
+        Review the Typescript code against the AirBnb Typescript style guide and point out any mismatches.
