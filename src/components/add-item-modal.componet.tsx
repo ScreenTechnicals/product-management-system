@@ -48,7 +48,10 @@ type AddItemModalProps = Pick<
   // onOpenEditDropdownItemModal: Dispatch<SetStateAction<void>>;
   // setSelectedDropdownItem: Dispatch<SetStateAction<LabelOptionType>>;
   // setCollectionName: Dispatch<SetStateAction<CollectionNameType>>;
-};
+-   // onOpenAddDropdownItemModal: Dispatch<SetStateAction<void>>;
+-   // onOpenEditDropdownItemModal: Dispatch<SetStateAction<void>>;
+-   // setSelectedDropdownItem: Dispatch<SetStateAction<LabelOptionType>>;
+-   // setCollectionName: Dispatch<SetStateAction<CollectionNameType>>;
 
 // If the commented-out code is not needed, consider removing it
 // const [itemInData, setItemInData] = useState<ItemType>({...});
