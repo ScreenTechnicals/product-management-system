@@ -59,7 +59,12 @@ type AddItemModalProps = Pick<
 // const [itemInData, setItemInData] = useState<ItemType>({...});
 // Remove this if not needed
 // const [itemInData, setItemInData] = useState<ItemType>({...});
-  onOpenChange,
+// Remove the commented-out code if it's not needed
+// const [itemInData, setItemInData] = useState<ItemType>({...});
+// Remove the commented-out code if it's not needed
+// const [itemInData, setItemInData] = useState<ItemType>({...});
+// Remove this if not needed
+// const [itemInData, setItemInData] = useState<ItemType>({...});
   onOpenAddDropdownItemModal,
   onOpenEditDropdownItemModal,
   setSelectedDropdownItem,
