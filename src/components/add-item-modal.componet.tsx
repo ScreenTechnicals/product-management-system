@@ -129,7 +129,19 @@ const [itemInData, setItemInData] = useState<ItemType>(() => ({
   totalPrice: 0,
   remarks: "",
 }));
-  const { data: itemsName } = useGetDropdownItems("items-name");
+// Remove the commented-out code for itemInData initialization
+// const [itemInData, setItemInData] = useState<ItemType>({
+//   id: Date.now().toString(),
+//   itemName: "",
+//   itemType: "",
+//   partyName: "",
+//   requisitionBy: "",
+//   quantity: 0,
+//   rate: 0,
+//   purchaseDate: undefined,
+//   totalPrice: 0,
+//   remarks: "",
+// });
   const { data: itemsType } = useGetDropdownItems("items-type");
   const { data: partyNames } = useGetDropdownItems("party-names");
   const { data: requisiotionsBy } = useGetDropdownItems("requisitions-by");
