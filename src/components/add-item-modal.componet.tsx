@@ -42,7 +42,34 @@ type AddItemModalProps = Pick<
   ModalProps,
   // Remove the commented-out props if they're not needed
   // "isOpen" | "onClose" | "onOpenChange"
-> & {
+// Remove the commented-out props if they're not needed
+// type AddItemModalProps = Pick<
+//   ModalProps,
+//   // "isOpen" | "onClose" | "onOpenChange"
+// > & {
+//   // onOpenAddDropdownItemModal: Dispatch<SetStateAction<void>>;
+//   // onOpenEditDropdownItemModal: Dispatch<SetStateAction<void>>;
+//   // setSelectedDropdownItem: Dispatch<SetStateAction<LabelOptionType>>;
+//   // setCollectionName: Dispatch<SetStateAction<CollectionNameType>>;
+// };
+
+// Remove the commented-out code for itemInData initialization
+// const [itemInData, setItemInData] = useState<ItemType>({...});
+
+// If these props are indeed not needed, remove them from the type definition
+// Make sure to check if they're used in the component before removing
+
+// Clean up the AddItemModalProps type definition
+// type AddItemModalProps = Pick<
+//   ModalProps,
+//   // Remove the commented-out props if they're not needed
+// > & {
+//   // Keep only the necessary props
+//   // onOpenAddDropdownItemModal: Dispatch<SetStateAction<void>>;
+//   // onOpenEditDropdownItemModal: Dispatch<SetStateAction<void>>;
+//   // setSelectedDropdownItem: Dispatch<SetStateAction<LabelOptionType>>;
+//   // setCollectionName: Dispatch<SetStateAction<CollectionNameType>>;
+// };
   // If these props are still needed, keep them; otherwise, remove them
   // onOpenAddDropdownItemModal: Dispatch<SetStateAction<void>>;
   // onOpenEditDropdownItemModal: Dispatch<SetStateAction<void>>;
