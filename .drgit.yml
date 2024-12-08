@@ -1,9 +1,11 @@
-# model: "gpt-4o-mini"
-language: "English (Unisted States)"
-# early-access: false
+language: "English (United States)"
 review:
   enabled: true
   tone: "informal"
   allow:
     pull-requests:
       authors-only: true
+  path-based-instructions:
+    - path: "**/*.js"
+      instructions: >
+        Review the JavaScript code against the Google JavaScript style guide and point out any mismatches.
