@@ -2,9 +2,6 @@ language: "English (United States)"
 review:
   enabled: true
   tone: "informal"
-  allow:
-    pull-requests:
-      authors-only: true
   path-based-instructions:
     - path: "**/*.tsx"
       instructions: >
