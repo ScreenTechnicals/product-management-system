@@ -2,7 +2,7 @@ language: "English (United States)"
 review:
   enabled: true
   tone: "informal"
-  path-based-instructions:
+  path-instructions:
     - path: "**/*.tsx"
-      instructions: >
+      instruction: >
         Review the Typescript code against the AirBnb Typescript style guide and point out any mismatches. Reply with CAPITALIZED comments.
