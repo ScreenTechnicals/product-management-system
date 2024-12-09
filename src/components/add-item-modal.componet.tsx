@@ -29,107 +29,13 @@ type AddItemModalProps = Pick<
 //   setSelectedDropdownItem: Dispatch<SetStateAction<LabelOptionType>>;
 //   setCollectionName: Dispatch<SetStateAction<CollectionNameType>>;
 // };
--   "isOpen" | "onClose" | "onOpenChange"
-- > & {
--   onOpenAddDropdownItemModal: Dispatch<SetStateAction<void>>;
--   onOpenEditDropdownItemModal: Dispatch<SetStateAction<void>>;
--   setSelectedDropdownItem: Dispatch<SetStateAction<LabelOptionType>>;
--   setCollectionName: Dispatch<SetStateAction<CollectionNameType>>;
-- };
-// If the props are indeed not needed, remove them from the type definition
-// Make sure to check if they're used in the component before removing
-type AddItemModalProps = Pick<
-  ModalProps,
-  // Remove the commented-out props if they're not needed
-  // "isOpen" | "onClose" | "onOpenChange"
-// Remove the commented-out props if they're not needed
-// type AddItemModalProps = Pick<
-//   ModalProps,
-//   // "isOpen" | "onClose" | "onOpenChange"
-// > & {
-//   // onOpenAddDropdownItemModal: Dispatch<SetStateAction<void>>;
-//   // onOpenEditDropdownItemModal: Dispatch<SetStateAction<void>>;
-//   // setSelectedDropdownItem: Dispatch<SetStateAction<LabelOptionType>>;
-//   // setCollectionName: Dispatch<SetStateAction<CollectionNameType>>;
-// };
 
-// Remove the commented-out code for itemInData initialization
-// const [itemInData, setItemInData] = useState<ItemType>({...});
-
-// If these props are indeed not needed, remove them from the type definition
-// Make sure to check if they're used in the component before removing
-
-// Clean up the AddItemModalProps type definition
-// type AddItemModalProps = Pick<
-//   ModalProps,
-//   // Remove the commented-out props if they're not needed
-// > & {
-//   // Keep only the necessary props
-//   // onOpenAddDropdownItemModal: Dispatch<SetStateAction<void>>;
-//   // onOpenEditDropdownItemModal: Dispatch<SetStateAction<void>>;
-//   // setSelectedDropdownItem: Dispatch<SetStateAction<LabelOptionType>>;
-//   // setCollectionName: Dispatch<SetStateAction<CollectionNameType>>;
-// };
-  // If these props are still needed, keep them; otherwise, remove them
-  // onOpenAddDropdownItemModal: Dispatch<SetStateAction<void>>;
-  // onOpenEditDropdownItemModal: Dispatch<SetStateAction<void>>;
-  // setSelectedDropdownItem: Dispatch<SetStateAction<LabelOptionType>>;
-  // setCollectionName: Dispatch<SetStateAction<CollectionNameType>>;
--   // onOpenAddDropdownItemModal: Dispatch<SetStateAction<void>>;
--   // onOpenEditDropdownItemModal: Dispatch<SetStateAction<void>>;
--   // setSelectedDropdownItem: Dispatch<SetStateAction<LabelOptionType>>;
--   // setCollectionName: Dispatch<SetStateAction<CollectionNameType>>;
-// Remove the commented-out props if they're not needed
-// onOpenAddDropdownItemModal: Dispatch<SetStateAction<void>>;
-// onOpenEditDropdownItemModal: Dispatch<SetStateAction<void>>;
-// setSelectedDropdownItem: Dispatch<SetStateAction<LabelOptionType>>;
-// setCollectionName: Dispatch<SetStateAction<CollectionNameType>>;
-// If the commented-out code is not needed, consider removing it
-// const [itemInData, setItemInData] = useState<ItemType>({...});
-// Remove the commented-out code if it's not needed
-// const [itemInData, setItemInData] = useState<ItemType>({...});
-// Remove this if not needed
-// const [itemInData, setItemInData] = useState<ItemType>({...});
-// Remove the commented-out code if it's not needed
-// const [itemInData, setItemInData] = useState<ItemType>({...});
-// Remove the commented-out code if it's not needed
-// const [itemInData, setItemInData] = useState<ItemType>({...});
-// Remove this if not needed
-// const [itemInData, setItemInData] = useState<ItemType>({...});
-// Remove the commented-out code if it's not needed
-// const [itemInData, setItemInData] = useState<ItemType>({...});
-// Remove the commented-out code if it's not needed
-// const [itemInData, setItemInData] = useState<ItemType>({...});
-// Remove this if not needed
-// const [itemInData, setItemInData] = useState<ItemType>({...});
-// Remove the commented-out code if it's not needed
-// const [itemInData, setItemInData] = useState<ItemType>({...});
-// Remove the commented-out code if it's not needed
-// const [itemInData, setItemInData] = useState<ItemType>({...});
-// Remove this if not needed
-// const [itemInData, setItemInData] = useState<ItemType>({...});
-// Remove the commented-out code if it's not needed
-// const [itemInData, setItemInData] = useState<ItemType>({...});
-// const [itemInData, setItemInData] = useState<ItemType>({...});
-// Remove this if not needed
-// const [itemInData, setItemInData] = useState<ItemType>({...});
-// const [itemInData, setItemInData] = useState<ItemType>({...});
-// Remove the commented-out code if it's not needed
-// const [itemInData, setItemInData] = useState<ItemType>({...});
-// Remove this if not needed
-// const [itemInData, setItemInData] = useState<ItemType>({...});
-// Remove the commented-out code if it's not needed
-// const [itemInData, setItemInData] = useState<ItemType>({...});
-// Remove the commented-out code if it's not needed
-// const [itemInData, setItemInData] = useState<ItemType>({...});
-// Remove this if not needed
-// const [itemInData, setItemInData] = useState<ItemType>({...});
-// Remove the commented-out code if it's not needed
-// const [itemInData, setItemInData] = useState<ItemType>({...});
-// Remove the commented-out code if it's not needed
-// const [itemInData, setItemInData] = useState<ItemType>({...});
-// Remove this if not needed
-// const [itemInData, setItemInData] = useState<ItemType>({...});
+export const AddItemModal = ({
+  isOpen,
+  onClose,
+  onOpenChange,
+  onOpenAddDropdownItemModal,
+  onOpenEditDropdownItemModal,
   setSelectedDropdownItem,
   setCollectionName,
 }: AddItemModalProps) => {
@@ -147,32 +53,8 @@ type AddItemModalProps = Pick<
   //   totalPrice: 0,
   //   remarks: "",
   // });
-// Uncomment the state initialization for itemInData
-const [itemInData, setItemInData] = useState<ItemType>(() => ({
-  id: Date.now().toString(),
-  itemName: "",
-  itemType: "",
-  partyName: "",
-  requisitionBy: "",
-  quantity: 0,
-  rate: 0,
-  purchaseDate: undefined,
-  totalPrice: 0,
-  remarks: "",
-}));
-// Remove the commented-out code for itemInData initialization
-// const [itemInData, setItemInData] = useState<ItemType>({
-//   id: Date.now().toString(),
-//   itemName: "",
-//   itemType: "",
-//   partyName: "",
-//   requisitionBy: "",
-//   quantity: 0,
-//   rate: 0,
-//   purchaseDate: undefined,
-//   totalPrice: 0,
-//   remarks: "",
-// });
+
+  const { data: itemsName } = useGetDropdownItems("items-name");
   const { data: itemsType } = useGetDropdownItems("items-type");
   const { data: partyNames } = useGetDropdownItems("party-names");
   const { data: requisiotionsBy } = useGetDropdownItems("requisitions-by");
