@@ -39,18 +39,7 @@ export const DeleteItemModal = ({
         backdrop="blur"
         onOpenChange={onOpenChange}
       >
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">
-                ⚠️ Warning
-              </ModalHeader>
-              <ModalBody>
-                <h1 className="p-0 m-0">
-                  Are you sure you want to delete this item?
-                </h1>
-                <h2>
-                  All other occurence of this in item are not going to be
+        rence of this in item are not going to be
                   deleted!
                 </h2>
               </ModalBody>
@@ -66,7 +55,7 @@ export const DeleteItemModal = ({
                 <Button
                   isDisabled={isSubmiting}
                   color="danger"
-                  onPress={() => {
+                  onPress={() => {dfdfdf
                     setIsSubmiting(true);
                     deleteItem(id, collection).finally(() => {
                       setIsSubmiting(false);
@@ -83,7 +72,7 @@ export const DeleteItemModal = ({
             </>
           )}
         </ModalContent>
-      </Modal>
+      </M
     </>
   );
 };
