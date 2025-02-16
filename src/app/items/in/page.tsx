@@ -1,9 +1,8 @@
 "use client";
 
-import { CollectionNameType, ItemType, LabelOptionType } from "@/common/types";
+// import { CollectionNameType, LabelOptionType } from "@/common/types";
 import {
   AddNewItemToDropDownModal,
-  EditDropdownItemModal,
   EditItemInModal,
   ItemsInTable,
 } from "@/components";
@@ -19,18 +18,18 @@ const ItemsInPage = () => {
     onClose: onCloseDelete,
     onOpenChange: onOpenChangeDelete,
   } = useDisclosure();
-  const [selectedItem, setSelectedItem] = useState<ItemType>({
-    id: "",
-    itemName: "",
-    itemType: "",
-    partyName: "",
-    requisitionBy: "",
-    quantity: 0,
-    rate: 0,
-    purchaseDate: undefined,
-    totalPrice: 0,
-    remarks: "",
-  });
+  // const [selectedItem, setSelectedItem] = useState<ItemType>({
+  //   id: "",
+  //   itemName: "",
+  //   itemType: "",
+  //   partyName: "",
+  //   requisitionBy: "",
+  //   quantity: 0,
+  //   rate: 0,
+  //   purchaseDate: undefined,
+  //   totalPrice: 0,
+  //   remarks: "",
+  // });
 
   const {
     isOpen: isOpenAddDropdownItemModal,
@@ -80,13 +79,6 @@ const ItemsInPage = () => {
         isOpen={isOpenAddDropdownItemModal}
         onClose={onCloseAddDropdownItemModal}
         onOpenChange={onOpenChangeAddDropdownItemModal}
-        collectionName={collectionName}
-      />
-      <EditDropdownItemModal
-        isOpen={isOpenEditDropdownItemModal}
-        onClose={onCloseEditDropdownItemModal}
-        onOpenChange={onOpenChangeEditDropdownItemModal}
-        dropdownItem={selectedDropDownItem}
         collectionName={collectionName}
       />
     </div>
