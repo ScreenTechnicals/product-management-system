@@ -5,4 +5,4 @@ review:
   path-instructions:
     - path: "**/*.tsx"
       instruction: >
-        Review the Typescript code against the AirBnb Typescript style guide and point out any mismatches. Reply with CAPITALIZED comments.
+        Review the Typescript code against the AirBnb Typescript style guide and point out any mismatches.
