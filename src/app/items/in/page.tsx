@@ -1,12 +1,7 @@
 "use client";
 
 import { CollectionNameType, ItemType, LabelOptionType } from "@/common/types";
-import {
-  AddNewItemToDropDownModal,
-  EditDropdownItemModal,
-  EditItemInModal,
-  ItemsInTable,
-} from "@/components";
+import { EditDropdownItemModal, ItemsInTable } from "@/components";
 import { DeleteItemModal } from "@/components/delete-item-modal.component";
 import { useDisclosure } from "@nextui-org/react";
 import { useState } from "react";
@@ -32,12 +27,12 @@ const ItemsInPage = () => {
     remarks: "",
   });
 
-  const {
-    isOpen: isOpenAddDropdownItemModal,
-    onOpen: onOpenAddDropdownItemModal,
-    onOpenChange: onOpenChangeAddDropdownItemModal,
-    onClose: onCloseAddDropdownItemModal,
-  } = useDisclosure();
+  // const {
+  //   isOpen: isOpenAddDropdownItemModal,
+  //   onOpen: onOpenAddDropdownItemModal,
+  //   onOpenChange: onOpenChangeAddDropdownItemModal,
+  //   onClose: onCloseAddDropdownItemModal,
+  // } = useDisclosure();
 
   const {
     isOpen: isOpenEditDropdownItemModal,
@@ -57,17 +52,7 @@ const ItemsInPage = () => {
   return (
     <div className="w-full md:px-10 p-5 relative">
       <ItemsInTable onOpenModal={onOpen} setSelectedItem={setSelectedItem} />
-      <EditItemInModal
-        isOpen={isOpen}
-        onOpenDelete={onOpenDelete}
-        onClose={onClose}
-        onOpenChange={onOpenChange}
-        selectedItem={selectedItem}
-        onOpenAddDropdownItemModal={onOpenAddDropdownItemModal}
-        onOpenEditDropdownItemModal={onOpenEditDropdownItemModal}
-        setSelectedDropdownItem={setSelectedDropDownItem}
-        setCollectionName={setCollectionName}
-      />
+
       <DeleteItemModal
         isOpen={isOpenDelete}
         onClose={onCloseDelete}
@@ -76,12 +61,12 @@ const ItemsInPage = () => {
         collection="items-in"
         id={selectedItem.id}
       />
-      <AddNewItemToDropDownModal
+      {/* <AddNewItemToDropDownModal
         isOpen={isOpenAddDropdownItemModal}
         onClose={onCloseAddDropdownItemModal}
         onOpenChange={onOpenChangeAddDropdownItemModal}
         collectionName={collectionName}
-      />
+      /> */}
       <EditDropdownItemModal
         isOpen={isOpenEditDropdownItemModal}
         onClose={onCloseEditDropdownItemModal}
