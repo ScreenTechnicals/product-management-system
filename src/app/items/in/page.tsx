@@ -2,10 +2,8 @@
 
 import { CollectionNameType, ItemType, LabelOptionType } from "@/common/types";
 import {
-  AddNewItemToDropDownModal,
-  EditDropdownItemModal,
   EditItemInModal,
-  ItemsInTable,
+  ItemsInTable
 } from "@/components";
 import { DeleteItemModal } from "@/components/delete-item-modal.component";
 import { useDisclosure } from "@nextui-org/react";
@@ -32,12 +30,6 @@ const ItemsInPage = () => {
     remarks: "",
   });
 
-  const {
-    isOpen: isOpenAddDropdownItemModal,
-    onOpen: onOpenAddDropdownItemModal,
-    onOpenChange: onOpenChangeAddDropdownItemModal,
-    onClose: onCloseAddDropdownItemModal,
-  } = useDisclosure();
 
   const {
     isOpen: isOpenEditDropdownItemModal,
@@ -76,19 +68,15 @@ const ItemsInPage = () => {
         collection="items-in"
         id={selectedItem.id}
       />
-      <AddNewItemToDropDownModal
-        isOpen={isOpenAddDropdownItemModal}
-        onClose={onCloseAddDropdownItemModal}
-        onOpenChange={onOpenChangeAddDropdownItemModal}
-        collectionName={collectionName}
-      />
-      <EditDropdownItemModal
+     
+     {/* <EditDropdownItemModal
         isOpen={isOpenEditDropdownItemModal}
         onClose={onCloseEditDropdownItemModal}
         onOpenChange={onOpenChangeEditDropdownItemModal}
         dropdownItem={selectedDropDownItem}
         collectionName={collectionName}
       />
+       */}
     </div>
   );
 };
