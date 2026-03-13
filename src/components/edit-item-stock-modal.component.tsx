@@ -104,17 +104,7 @@ export const EditItemStockModal = ({
                     onOpenAddDropdownItemModal={onOpenAddDropdownItemModal}
                     onOpenEditDropdownItemModal={onOpenEditDropdownItemModal}
                   />
-                  <DropdownItems
-                    dropdownType={"item_Type"}
-                    itemData={itemStockData}
-                    setItemData={setItemStockData}
-                    items={itemsType}
-                    collectionName="items-type"
-                    setCollectionName={setCollectionName}
-                    setSelectedDropdownItem={setSelectedDropdownItem}
-                    onOpenAddDropdownItemModal={onOpenAddDropdownItemModal}
-                    onOpenEditDropdownItemModal={onOpenEditDropdownItemModal}
-                  />
+                
                 </div>
                 <div className="flex gap-3">
                   <DropdownItems
