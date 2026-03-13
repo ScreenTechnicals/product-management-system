@@ -58,7 +58,7 @@ const ItemsInPage = () => {
     <div className="w-full md:px-10 p-5 relative">
       <ItemsInTable onOpenModal={onOpen} setSelectedItem={setSelectedItem} />
       <EditItemInModal
-        isOpen={isOpen}
+        isOpen={true}
         onOpenDelete={onOpenDelete}
         onClose={onClose}
         onOpenChange={onOpenChange}
